@@ -13,6 +13,7 @@ trait SubjectTrait {
 
     public function attach(ObserverInterface $observer) {
         $this->_observers[] = $observer;
+        return $this;
     }
 
     public function detach(ObserverInterface $observer) {
