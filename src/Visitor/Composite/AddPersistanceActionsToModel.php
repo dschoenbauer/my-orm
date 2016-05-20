@@ -29,13 +29,13 @@ class AddPersistanceActionsToModel implements ModelVisitorInterface{
 
     public function visitModel(Model $model) {
         $model->getActions()
-                ->add(ModelActions::CREATE, New Create(), ModelExecutionPriority::ACTION)
-                ->add(ModelActions::UPDATE, New Update(), ModelExecutionPriority::ACTION)
-                ->add(ModelActions::DELETE, New Delete(), ModelExecutionPriority::ACTION)
+                ->add(ModelActions::CREATE, new Create(), ModelExecutionPriority::ACTION)
+                ->add(ModelActions::UPDATE, new Update(), ModelExecutionPriority::ACTION)
+                ->add(ModelActions::DELETE, new Delete(), ModelExecutionPriority::ACTION)
                 
-                ->add(ModelActions::FETCH, New Fetch(), ModelExecutionPriority::ACTION)
+                ->add(ModelActions::FETCH, new Fetch(), ModelExecutionPriority::ACTION)
                 
-                ->add(ModelActions::FETCH_ALL, New FetchAllFull(), ModelExecutionPriority::ACTION)
+                ->add(ModelActions::FETCH_ALL, new FetchAllFull(), ModelExecutionPriority::ACTION)
         ;
         $model->accept(new Entity());
         $model->accept(new Collection());

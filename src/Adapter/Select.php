@@ -120,7 +120,7 @@ class Select {
 
     public function getSql() {
         if (!count($this->getFrom())) {
-            throw New LogicException("You Must Define Tables To Select From");
+            throw new LogicException("You Must Define Tables To Select From");
         }
         $sql = "SELECT ";
         if ($this->getDistinct()) {

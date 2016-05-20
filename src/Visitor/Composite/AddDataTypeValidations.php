@@ -34,8 +34,8 @@ class AddDataTypeValidations implements ModelVisitorInterface {
                 ->attach(new Boolean())
                 ->attach(new Numeric())
                 ->getActions()
-                    ->add(ModelActions::CREATE, New ValidateData(), ModelExecutionPriority::PRIOR_TO_ACTION)
-                    ->add(ModelActions::UPDATE, New ValidateData(), ModelExecutionPriority::PRIOR_TO_ACTION)
+                    ->add(ModelActions::CREATE, new ValidateData(), ModelExecutionPriority::PRIOR_TO_ACTION)
+                    ->add(ModelActions::UPDATE, new ValidateData(), ModelExecutionPriority::PRIOR_TO_ACTION)
                 ;
     }
 

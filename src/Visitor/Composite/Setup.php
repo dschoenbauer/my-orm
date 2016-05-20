@@ -22,7 +22,7 @@ class Setup implements ModelVisitorInterface {
         $model
                 ->accept(new TimeZone())
                 ->accept(new TimeZoneDb())
-                ->accept(New Utf8())
+                ->accept(new Utf8())
                 ->accept(new UserInput());
                 ;
     }
