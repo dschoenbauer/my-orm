@@ -11,7 +11,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "CTIMT\\MyOrm\\": "src/"
+            "CTIMT\\": "src/"
         }
     },
     "require": {}
