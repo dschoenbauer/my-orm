@@ -18,7 +18,7 @@ class ModelFactory {
     private $_model;
 
     public function __construct(AbstractEntity $entity, PDO $adapter) {
-        $this->setModel(new Model($entity, New Query($adapter)));
+        $this->setModel(new Model($entity, new Query($adapter)));
     }
 
     /**
@@ -26,7 +26,7 @@ class ModelFactory {
      */
     public function getStandardModel() {
         return $this->getModel()
-                ->accept(New Setup())
+                ->accept(new Setup())
                 ->accept(new AddDataTypeValidations())
                 ->accept(new AddPersistanceActionsToModel());
     }
