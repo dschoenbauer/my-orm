@@ -24,7 +24,7 @@ class Entity implements ModelVisitorInterface {
 
     public function visitModel(Model $model) {
         $model->getActions()
-                ->add(ModelActions::FETCH, New FormatData(), ModelExecutionPriority::AFTER_ACTION)
+                ->add(ModelActions::FETCH, new FormatData(), ModelExecutionPriority::AFTER_ACTION)
 ;
         $model->notify(ModelEvents::LAYOUT_ENTITY_APPLIED);
     }

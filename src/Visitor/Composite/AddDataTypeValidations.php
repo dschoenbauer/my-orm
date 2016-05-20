@@ -28,14 +28,14 @@ class AddDataTypeValidations implements ModelVisitorInterface {
 
     public function visitModel(Model $model) {
         $model
-                ->accept(new ValidFieldsFilter())
-                ->accept(new String())
-                ->accept(new Date())
-                ->accept(new Boolean())
-                ->accept(new Numeric())
+                ->attach(new ValidFieldsFilter())
+                ->attach(new String())
+                ->attach(new Date())
+                ->attach(new Boolean())
+                ->attach(new Numeric())
                 ->getActions()
-                    ->add(ModelActions::CREATE, New ValidateData(), ModelExecutionPriority::PRIOR_TO_ACTION)
-                    ->add(ModelActions::UPDATE, New ValidateData(), ModelExecutionPriority::PRIOR_TO_ACTION)
+                    ->add(ModelActions::CREATE, new ValidateData(), ModelExecutionPriority::PRIOR_TO_ACTION)
+                    ->add(ModelActions::UPDATE, new ValidateData(), ModelExecutionPriority::PRIOR_TO_ACTION)
                 ;
     }
 
