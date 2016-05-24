@@ -11,6 +11,11 @@ trait SubjectTrait {
 
     private $_observers = [];
 
+    /**
+     * Used to attach an event to the Subject
+     * @param ObserverInterface $observer
+     * @return type
+     */
     public function attach(ObserverInterface $observer) {
         $this->_observers[] = $observer;
         return $this;

@@ -1,13 +1,17 @@
 <?php
 //header('Content-type: application/json');
-use CTIMT\MyOrm\Example\ListEntity;
+
+
+use CTIMT\MyOrm\Builder\ModelDirector;
+use CTIMT\MyOrm\Builder\StandardModelBuilder;
+use CTIMT\MyOrm\Example\CountryEntry;
 use CTIMT\MyOrm\Model\Model;
-use CTIMT\MyOrm\Model\ModelFactory;
 
 include './vendor/autoload.php';
-$adapter = new PDO('mysql:dbname=north;host=127.0.0.1', 'root');
-$modelFactory = new ModelFactory(new ListEntity(), $adapter);
+$adapter = new PDO('mysql:dbname=springs_local;host=127.0.0.1', 'root');
+$modelDirector = new ModelDirector(new StandardModelBuilder());
 
 /* @var $model Model */
-$model = $modelFactory->getStandardModel();
-echo json_encode($model->fetchAll());
+$model = $modelDirector->buildModel(new CountryEntry(), $adapter)->getModel();
+echo json_encode($model->fetch(958));die();
+//echo json_encode($model->fetchAll());

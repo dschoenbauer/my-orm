@@ -9,14 +9,10 @@
 namespace CTIMT\MyOrm\Enum;
 
 /**
- * Description of UserInterface
+ * Description of SETTINGS
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class UserInterface {
-    const FIELDS = 'fields';
-    const FILTER = 'filter';
-    const SORT = 'sort';
-    const PAGE = 'page';
-    const ALIAS = 'alias';
+class Settings {
+    const ROW_ID = 'rowID';
 }

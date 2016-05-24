@@ -1,6 +1,6 @@
 <?php
 
-namespace CTIMT\MyOrm\Visitor\Composite\Layout;
+namespace CTIMT\MyOrm\Visitor\Layout;
 
 use CTIMT\MyOrm\Enum\LayoutKeys;
 use CTIMT\MyOrm\Enum\ModelActions;

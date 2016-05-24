@@ -1,6 +1,6 @@
 <?php
 
-namespace CTIMT\MyOrm\Visitor\Composite\Setup;
+namespace CTIMT\MyOrm\Visitor\Setup;
 
 use CTIMT\MyOrm\Enum\ModelAttributes;
 use CTIMT\MyOrm\Model\Model;
