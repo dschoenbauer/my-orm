@@ -6,6 +6,9 @@
  */
 namespace CTIMT\MyOrm\Model;
 
+use CTIMT\MyOrm\Enum\ModelAttributes;
+use LogicException;
+
 /**
  * Description of ActionCollection
  *
@@ -30,10 +33,10 @@ class ActionCollection
     /**
      * 
      * @param type $modelAction
-     * @param \CTIMT\MyOrm\Model\ModelVisitorInterface $modelVisitor
+     * @param ModelVisitorInterface $modelVisitor
      * @param type $priority smaller the number earlier the execution. Numbers 
      * below zero are before action numbers after zero follow the action.
-     * @return \CTIMT\MyOrm\Model\ActionCollection
+     * @return ActionCollection
      */
     public function add($modelAction, ModelVisitorInterface $modelVisitor, $priority)
     {
@@ -48,6 +51,7 @@ class ActionCollection
 
     public function run($modelAction)
     {
+        $this->getModel()->setAttribute(ModelAttributes::MODEL_ACTION, $modelAction);
         /* Indredibly mean but handles late additions to the queue */
         for ($i = 0; $i < count($this->extractQueue($modelAction)); $i++) {
             $this->getModel()->accept($this->extractQueue($modelAction)[$i]);
@@ -65,11 +69,14 @@ class ActionCollection
             $sort2[$key] = $row[self::INSERTED];
         }
         if (!array_multisort($sort1, SORT_ASC, $sort2, SORT_ASC, $queue)) {
-            return new \LogicException('Error in sort:' . __CLASS__);
+            return new LogicException('Error in sort:' . __CLASS__);
         }
         return array_column($queue, self::DATA);
     }
 
+    /**
+     * @return Model
+     */
     public function getModel()
     {
         return $this->_model;

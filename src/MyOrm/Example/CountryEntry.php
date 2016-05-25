@@ -2,8 +2,11 @@
 
 use CTIMT\MyOrm\Entity\AbstractEntity;
 use CTIMT\MyOrm\Entity\HasBoolFieldsInterface;
+use CTIMT\MyOrm\Entity\HasDefaultValuesInterface;
 use CTIMT\MyOrm\Entity\HasFilterInterface;
 use CTIMT\MyOrm\Entity\HasNumericFieldsInterface;
+use CTIMT\MyOrm\Entity\HasRequiredFieldsInterface;
+use CTIMT\MyOrm\Entity\HasStaticValuesInterface;
 use CTIMT\MyOrm\Entity\HasStringFieldsInterface;
 use CTIMT\MyOrm\Entity\IsSortableInterface;
 
@@ -12,7 +15,8 @@ use CTIMT\MyOrm\Entity\IsSortableInterface;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class CountryEntry extends AbstractEntity implements HasBoolFieldsInterface, HasStringFieldsInterface, HasFilterInterface, IsSortableInterface, HasNumericFieldsInterface
+class CountryEntry extends AbstractEntity implements
+HasBoolFieldsInterface, HasStringFieldsInterface, HasFilterInterface, IsSortableInterface, HasNumericFieldsInterface, HasDefaultValuesInterface, HasStaticValuesInterface, HasRequiredFieldsInterface
 {
 
     public function __construct()
@@ -53,5 +57,20 @@ class CountryEntry extends AbstractEntity implements HasBoolFieldsInterface, Has
     public function getNumericFields()
     {
         return ['country_id'];
+    }
+
+    public function getDefaultValues()
+    {
+        return [ 'country_abbrev2' => "Bo"];
+    }
+
+    public function getStaticValues()
+    {
+        return [ 'country_abbrev3' => 'BOB'];
+    }
+
+    public function getRequiredFields()
+    {
+        return ['country_abbrev2','country_abbrev3'];
     }
 }

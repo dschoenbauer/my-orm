@@ -1,6 +1,7 @@
 <?php namespace CTIMT\MyOrm\Exception\Visitor\DataType;
 
 use CTIMT\MyOrm\Enum\ErrorMessages;
+use CTIMT\MyOrm\Exception\Http\UnprocessableEntity;
 
 /**
  * Description of InvalidDataTypeException

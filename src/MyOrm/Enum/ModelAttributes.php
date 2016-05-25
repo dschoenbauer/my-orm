@@ -15,5 +15,6 @@ class ModelAttributes
     const FIELDS = 'fields';
     const PAGE = 'page';
     const FILTER = 'filter';
+    const MODEL_ACTION = 'modelAction';
 
 }

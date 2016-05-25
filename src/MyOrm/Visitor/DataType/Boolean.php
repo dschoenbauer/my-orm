@@ -35,8 +35,9 @@ class Boolean implements ModelVisitorInterface, ObserverInterface
         $data = $model->getData();
         foreach ($booleanFields as $field) {
             if (array_key_exists($field, $data) && !is_bool($data[$field])) {
-                throw new InvalidDataTypeException($field, 'boolean');
+                $data[$field] = boolval($data[$field]);
             }
         }
+        $model->setData($data);
     }
 }

@@ -3,6 +3,7 @@
 use CTIMT\MyOrm\Adapter\Query;
 use CTIMT\MyOrm\Entity\AbstractEntity;
 use CTIMT\MyOrm\Enum\ModelActions;
+use CTIMT\MyOrm\Enum\ModelEvents;
 use Exception;
 
 /*
@@ -41,7 +42,6 @@ class Model
             $this->getActions()->run(ModelActions::CREATE);
             $this->getQuery()->getAdapter()->commit();
         } catch (\Exception $exc) {
-            $this->notify(ModelEvents::CREATE_ERROR);
             $this->getQuery()->getAdapter()->rollBack();
             throw $exc;
         }

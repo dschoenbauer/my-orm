@@ -13,6 +13,7 @@ $modelDirector = new ModelDirector(new StandardModelBuilder());
 
 /* @var $model Model */
 $model = $modelDirector->buildModel(new CountryEntry(), $adapter)->getModel();
-echo json_encode($model->update(958, ['value' => 'Albania' . rand(0, 100)]));
+
+echo json_encode($model->update(1238,['id'=>'1238','value' => 'Albania' . rand(0, 100),'country_requireState' => 0,'country_abbrev2'=>'Bo','country_abbrev3'=>'Bon']));
 die();
 //echo json_encode($model->fetchAll());

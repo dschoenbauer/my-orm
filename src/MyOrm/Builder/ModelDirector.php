@@ -13,7 +13,7 @@ class ModelDirector
 
     private $builder;
 
-    public function __construct(AbstractModelBuilder $builder)
+    public function __construct(ModelBuilderInterface $builder)
     {
         $this->setBuilder($builder);
     }
