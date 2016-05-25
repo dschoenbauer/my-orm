@@ -1,6 +1,4 @@
-<?php
-
-namespace CTIMT\MyOrm\Exception\Platform;
+<?php namespace CTIMT\MyOrm\Exception\Platform;
 
 use CTIMT\MyOrm\Exception\ExceptionInterface;
 use OutOfRangeException as OutOfRange;
@@ -10,6 +8,7 @@ use OutOfRangeException as OutOfRange;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class OutOfRangeException extends OutOfRange implements ExceptionInterface {
+class OutOfRangeException extends OutOfRange implements ExceptionInterface
+{
     
 }

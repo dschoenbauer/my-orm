@@ -1,6 +1,4 @@
-<?php
-
-namespace CTIMT\MyOrm\Exception\Http;
+<?php namespace CTIMT\MyOrm\Exception\Http;
 
 use CTIMT\MyOrm\Exception\Platform\InvalidArgumentException;
 
@@ -9,10 +7,11 @@ use CTIMT\MyOrm\Exception\Platform\InvalidArgumentException;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class BadRequest extends InvalidArgumentException implements HttpExceptionInterface {
+class BadRequest extends InvalidArgumentException implements HttpExceptionInterface
+{
 
-    public function __construct($message = "") {
+    public function __construct($message = "")
+    {
         parent::__construct($message, 400);
     }
-
 }

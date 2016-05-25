@@ -1,12 +1,12 @@
-<?php
-namespace CTIMT\MyOrm\Enum;
+<?php namespace CTIMT\MyOrm\Enum;
 
 /**
  * Description of ModelEvents
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class ModelEvents {
+class ModelEvents
+{
 
     const VALIDATE = 'validate';
     const LAYOUT_ENTITY_APPLIED = "layoutEntity";

@@ -13,5 +13,6 @@ $modelDirector = new ModelDirector(new StandardModelBuilder());
 
 /* @var $model Model */
 $model = $modelDirector->buildModel(new CountryEntry(), $adapter)->getModel();
-echo json_encode($model->fetch(958));die();
+echo json_encode($model->update(958, ['value' => 'Albania' . rand(0, 100)]));
+die();
 //echo json_encode($model->fetchAll());

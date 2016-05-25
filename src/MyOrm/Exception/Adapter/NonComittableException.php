@@ -1,6 +1,4 @@
-<?php
-
-namespace CTIMT\MyOrm\Exception\Adapter;
+<?php namespace CTIMT\MyOrm\Exception\Adapter;
 
 use CTIMT\MyOrm\Exception\ExceptionInterface;
 use CTIMT\MyOrm\Exception\Platform\Exception;
@@ -10,6 +8,7 @@ use CTIMT\MyOrm\Exception\Platform\Exception;
  *
  * @author David
  */
-class NonComittableException extends Exception implements ExceptionInterface {
+class NonComittableException extends Exception implements ExceptionInterface
+{
     
 }

@@ -1,6 +1,4 @@
-<?php
-
-namespace CTIMT\MyOrm\Visitor\DataType;
+<?php namespace CTIMT\MyOrm\Visitor\DataType;
 
 use CTIMT\MyOrm\Entity\HasDateFieldsInterface;
 use CTIMT\MyOrm\Enum\ModelEvents;
@@ -15,21 +13,25 @@ use DateTime;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class Date implements ModelVisitorInterface, ObserverInterface {
+class Date implements ModelVisitorInterface, ObserverInterface
+{
 
-    public function visitModel(Model $model) {
+    public function visitModel(Model $model)
+    {
         if ($model->getEntity() instanceof HasDateFieldsInterface) {
             $model->accept($this);
         }
     }
 
-    public function update(Model $model, $eventName) {
-        if($eventName == ModelEvents::VALIDATE){
+    public function update(Model $model, $eventName)
+    {
+        if ($eventName == ModelEvents::VALIDATE) {
             $this->validate($model);
         }
     }
 
-    private function validate(Model $model) {
+    private function validate(Model $model)
+    {
         $dateFields = $model->getEntity()->getDateFields();
         $data = $model->getData();
         foreach ($dateFields as $field) {
@@ -39,11 +41,11 @@ class Date implements ModelVisitorInterface, ObserverInterface {
         }
     }
 
-    private function validateField($value) {
+    private function validateField($value)
+    {
         return (is_array($value) &&
-                array_key_exists('date', $value) && is_string($value['date']) &&
-                array_key_exists('timezone_type', $value) && is_numeric($value['timezone_type']) &&
-                array_key_exists('timezone', $value) && is_string($value['timezone'])) || $value instanceof DateTime;
+            array_key_exists('date', $value) && is_string($value['date']) &&
+            array_key_exists('timezone_type', $value) && is_numeric($value['timezone_type']) &&
+            array_key_exists('timezone', $value) && is_string($value['timezone'])) || $value instanceof DateTime;
     }
-
 }

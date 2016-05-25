@@ -1,6 +1,4 @@
-<?php
-
-namespace CTIMT\MyOrm\Example;
+<?php namespace CTIMT\MyOrm\Example;
 
 use CTIMT\MyOrm\Entity\AbstractEntity;
 use CTIMT\MyOrm\Entity\HasBoolFieldsInterface;
@@ -14,38 +12,46 @@ use CTIMT\MyOrm\Entity\IsSortableInterface;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class CountryEntry extends AbstractEntity implements HasBoolFieldsInterface, HasStringFieldsInterface, HasFilterInterface,  IsSortableInterface, HasNumericFieldsInterface {
+class CountryEntry extends AbstractEntity implements HasBoolFieldsInterface, HasStringFieldsInterface, HasFilterInterface, IsSortableInterface, HasNumericFieldsInterface
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->setIdField('country_id')->setName('country')->setTable('country');
     }
 
-    public function getBoolFields() {
+    public function getBoolFields()
+    {
         return [ 'country_requireState'];
     }
 
-    public function getStringFields() {
+    public function getStringFields()
+    {
         return ['country_name', 'country_abbrev2', 'country_abbrev3'];
     }
 
-    public function getFilters() {
+    public function getFilters()
+    {
         return ['country_name', 'country_abbrev2'];
     }
 
-    public function getDefaultSortDirection() {
+    public function getDefaultSortDirection()
+    {
         return "desc";
     }
 
-    public function getDefaultSortField() {
+    public function getDefaultSortField()
+    {
         return "country_name";
     }
 
-    public function getSortFields() {
+    public function getSortFields()
+    {
         return ['country_name'];
     }
 
-    public function getNumericFields() {
+    public function getNumericFields()
+    {
         return ['country_id'];
     }
-
 }

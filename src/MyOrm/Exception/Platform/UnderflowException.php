@@ -1,6 +1,4 @@
-<?php
-
-namespace CTIMT\MyOrm\Exception\Platform;
+<?php namespace CTIMT\MyOrm\Exception\Platform;
 
 use CTIMT\MyOrm\Exception\ExceptionInterface;
 use UnderflowException as Underflow;
@@ -11,6 +9,7 @@ use UnderflowException as Underflow;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class UnderflowException extends Underflow implements ExceptionInterface {
+class UnderflowException extends Underflow implements ExceptionInterface
+{
     
 }

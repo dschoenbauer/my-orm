@@ -1,6 +1,4 @@
-<?php
-
-namespace CTIMT\MyOrm\Exception\Visitor\DataType;
+<?php namespace CTIMT\MyOrm\Exception\Visitor\DataType;
 
 use CTIMT\MyOrm\Enum\ErrorMessages;
 
@@ -9,10 +7,11 @@ use CTIMT\MyOrm\Enum\ErrorMessages;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class InvalidDataTypeException extends UnprocessableEntity {
+class InvalidDataTypeException extends UnprocessableEntity
+{
 
-    public function __construct($field, $expectedDataType) {
-        parent::__construct(ErrorMessages::InvalidDataType($field, $expectedDataType));
+    public function __construct($field, $expectedDataType)
+    {
+        parent::__construct(ErrorMessages::invalidDataType($field, $expectedDataType));
     }
-
 }

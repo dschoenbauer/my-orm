@@ -1,6 +1,4 @@
-<?php
-
-namespace CTIMT\MyOrm\Visitor\Command;
+<?php namespace CTIMT\MyOrm\Visitor\Command;
 
 use CTIMT\MyOrm\Model\Model;
 use CTIMT\MyOrm\Model\ModelVisitorInterface;
@@ -10,26 +8,30 @@ use CTIMT\MyOrm\Model\ModelVisitorInterface;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class CustomFunction implements ModelVisitorInterface {
+class CustomFunction implements ModelVisitorInterface
+{
 
-    private $_customFunction;
+    private $customFunction;
 
-    public function __construct(callable $customFunction) {
+    public function __construct(callable $customFunction)
+    {
         $this->setCustomFunction($customFunction);
     }
 
-    public function getCustomFunction() {
-        return $this->_customFunction;
+    public function getCustomFunction()
+    {
+        return $this->customFunction;
     }
 
-    public function setCustomFunction($customFunction) {
-        $this->_customFunction = $customFunction;
+    public function setCustomFunction($customFunction)
+    {
+        $this->customFunction = $customFunction;
         return $this;
     }
 
-    public function visitModel(Model $model) {
+    public function visitModel(Model $model)
+    {
         $funct = $this->getCustomFunction();
         $funct($model);
     }
-
 }

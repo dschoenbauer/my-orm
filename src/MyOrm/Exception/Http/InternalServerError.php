@@ -1,6 +1,4 @@
-<?php
-
-namespace CTIMT\MyOrm\Exception\Http;
+<?php namespace CTIMT\MyOrm\Exception\Http;
 
 use CTIMT\MyOrm\Exception\Platform\LogicException;
 
@@ -9,10 +7,11 @@ use CTIMT\MyOrm\Exception\Platform\LogicException;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class InternalServerError extends LogicException implements HttpExceptionInterface {
+class InternalServerError extends LogicException implements HttpExceptionInterface
+{
 
-    public function __construct($message = "") {
+    public function __construct($message = "")
+    {
         parent::__construct($message, 500);
     }
-
 }

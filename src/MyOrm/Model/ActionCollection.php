@@ -1,11 +1,9 @@
 <?php
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 namespace CTIMT\MyOrm\Model;
 
 /**
@@ -13,7 +11,8 @@ namespace CTIMT\MyOrm\Model;
  *
  * @author David
  */
-class ActionCollection {
+class ActionCollection
+{
 
     const DATA = 'data';
     const PRIORITY = 'priority';
@@ -21,6 +20,12 @@ class ActionCollection {
 
     private $_insertIndex = 0;
     private $_actions = [];
+    private $_model;
+
+    public function __construct(Model $model)
+    {
+        $this->setModel($model);
+    }
 
     /**
      * 
@@ -30,7 +35,8 @@ class ActionCollection {
      * below zero are before action numbers after zero follow the action.
      * @return \CTIMT\MyOrm\Model\ActionCollection
      */
-    public function add($modelAction, ModelVisitorInterface $modelVisitor, $priority) {
+    public function add($modelAction, ModelVisitorInterface $modelVisitor, $priority)
+    {
 
         $this->_actions[$modelAction][] = [
             self::PRIORITY => (int) $priority,
@@ -40,14 +46,16 @@ class ActionCollection {
         return $this;
     }
 
-    public function run($modelAction, Model $model) {
+    public function run($modelAction)
+    {
         /* Indredibly mean but handles late additions to the queue */
         for ($i = 0; $i < count($this->extractQueue($modelAction)); $i++) {
-            $model->accept($this->extractQueue($modelAction)[$i]);
+            $this->getModel()->accept($this->extractQueue($modelAction)[$i]);
         }
     }
 
-    private function extractQueue($queueName) {
+    private function extractQueue($queueName)
+    {
         if (!array_key_exists($queueName, $this->_actions)) {
             return [];
         }
@@ -62,4 +70,14 @@ class ActionCollection {
         return array_column($queue, self::DATA);
     }
 
+    public function getModel()
+    {
+        return $this->_model;
+    }
+
+    public function setModel(Model $model)
+    {
+        $this->_model = $model;
+        return $this;
+    }
 }

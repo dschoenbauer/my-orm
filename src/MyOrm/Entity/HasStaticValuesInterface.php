@@ -1,9 +1,7 @@
 <?php
-
 /*
  * Copyright 2015 Coe-Truman International.
  */
-
 namespace CTIMT\MyOrm\Entity;
 
 /**
@@ -11,7 +9,8 @@ namespace CTIMT\MyOrm\Entity;
  *
  * @author David
  */
-interface HasStaticValuesInterface {
+interface HasStaticValuesInterface
+{
 
     public function getStaticValues();
 }

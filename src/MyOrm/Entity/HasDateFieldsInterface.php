@@ -1,13 +1,12 @@
-<?php
-
-namespace CTIMT\MyOrm\Entity;
+<?php namespace CTIMT\MyOrm\Entity;
 
 /**
  * Description of HasDateFieldsInterface
  *
  * @author David
  */
-interface HasDateFieldsInterface {
+interface HasDateFieldsInterface
+{
 
     public function getDateFields();
 }

@@ -1,6 +1,4 @@
-<?php
-
-namespace CTIMT\MyOrm\Exception\Platform;
+<?php namespace CTIMT\MyOrm\Exception\Platform;
 
 use CTIMT\MyOrm\Exception\ExceptionInterface;
 use LogicException as Logic;
@@ -11,6 +9,7 @@ use LogicException as Logic;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class LogicException extends Logic implements ExceptionInterface {
-
+class LogicException extends Logic implements ExceptionInterface
+{
+    
 }

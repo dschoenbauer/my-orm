@@ -1,6 +1,4 @@
-<?php
-
-namespace CTIMT\MyOrm\Visitor\Content;
+<?php namespace CTIMT\MyOrm\Visitor\Content;
 
 use CTIMT\MyOrm\Adapter\Select;
 use CTIMT\MyOrm\Adapter\SelectVisitorInterface;
@@ -14,7 +12,8 @@ use CTIMT\MyOrm\Model\ModelVisitorInterface;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class FetchAllFull implements ModelVisitorInterface {
+class FetchAllFull implements ModelVisitorInterface
+{
 
     const PDO_FETCH = 196610;
 
@@ -23,14 +22,16 @@ class FetchAllFull implements ModelVisitorInterface {
     private $_fetchFlat = [];
     private $_fetchStyle = self::PDO_FETCH;
 
-    public function __construct(Select $select, array $visitors = []) {
+    public function __construct(Select $select, array $visitors = [])
+    {
         $this->setSelect($select)->setVisitors($visitors);
     }
 
-    public function visitModel(Model $model) {
+    public function visitModel(Model $model)
+    {
         $this->getSelect()
-                ->setFields($model->getEntity()->getAllFields())
-                ->addFrom($model->getEntity()->getTable());
+            ->setFields($model->getEntity()->getAllFields())
+            ->addFrom($model->getEntity()->getTable());
         $this->applyVisitors($model, $this->getSelect(), $this->getVisitors());
         $this->runTemplate($model);
         $this->getSelect()->setFields(array_merge([$model->getEntity()->getIdField() . ' ' . Settings::ROW_ID], $this->getSelect()->getFields()));
@@ -49,7 +50,8 @@ class FetchAllFull implements ModelVisitorInterface {
         $model->notify(ModelEvents::PRIMARY_DATA_PULLED);
     }
 
-    private function applyVisitors(Model $model, Select $select, $visitors) {
+    private function applyVisitors(Model $model, Select $select, $visitors)
+    {
         foreach ($visitors as $visitor) {
             if ($visitor instanceof ModelVisitorInterface) {
                 $model->accept($visitor);
@@ -64,44 +66,52 @@ class FetchAllFull implements ModelVisitorInterface {
     /**
      * @return Select
      */
-    public function getSelect() {
+    public function getSelect()
+    {
         return $this->_select;
     }
 
-    public function setSelect($select) {
+    public function setSelect($select)
+    {
         $this->_select = $select;
         return $this;
     }
 
-    public function getVisitors() {
+    public function getVisitors()
+    {
         return $this->_visitors;
     }
 
-    public function setVisitors(array $visitors = []) {
+    public function setVisitors(array $visitors = [])
+    {
         $this->_visitors = $visitors;
         return $this;
     }
 
-    protected function runTemplate(Model $model) {
+    protected function runTemplate(Model $model)
+    {
         
     }
 
-    public function getFetchFlat() {
+    public function getFetchFlat()
+    {
         return $this->_fetchFlat;
     }
 
-    public function setFetchFlat($fetchFlat = true) {
+    public function setFetchFlat($fetchFlat = true)
+    {
         $this->_fetchFlat = $fetchFlat;
         return $this;
     }
 
-    public function getFetchStyle() {
+    public function getFetchStyle()
+    {
         return $this->_fetchStyle;
     }
 
-    public function setFetchStyle($fetchStyle) {
+    public function setFetchStyle($fetchStyle)
+    {
         $this->_fetchStyle = $fetchStyle;
         return $this;
     }
-
 }

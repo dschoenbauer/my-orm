@@ -1,6 +1,4 @@
-<?php
-
-namespace CTIMT\MyOrm\Exception\Platform;
+<?php namespace CTIMT\MyOrm\Exception\Platform;
 
 use CTIMT\MyOrm\Exception\ExceptionInterface;
 use DomainException as Domain;
@@ -10,6 +8,7 @@ use DomainException as Domain;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class DomainException extends Domain implements ExceptionInterface {
+class DomainException extends Domain implements ExceptionInterface
+{
     
 }

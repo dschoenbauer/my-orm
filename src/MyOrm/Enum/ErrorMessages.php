@@ -1,13 +1,12 @@
-<?php
-
-namespace CTIMT\MyOrm\Enum;
+<?php namespace CTIMT\MyOrm\Enum;
 
 /**
  * Description of ErrorMessages
  *
  * @author David
  */
-class ErrorMessages {
+class ErrorMessages
+{
 
     const DATA_PROVIDER_MISSING_PARAMETER = 'You need to provide field: %s';
     const DATA_PROVIDER_MISSING_PARAMETERS = 'You need to provide one of the following fields: %s';
@@ -22,8 +21,8 @@ class ErrorMessages {
     const INVALID_FILTER = 'Filter key: %s is invalid. Valid keys are: %s';
     const INVALID_FIELD = 'Fields: %s is invalid. Valid fields are: %s';
 
-    public static function InvalidDataType($field, $expectedDataType) {
+    public static function invalidDataType($field, $expectedDataType)
+    {
         return sprintf('%s is expected to be a %s', $field, $expectedDataType);
     }
-
 }

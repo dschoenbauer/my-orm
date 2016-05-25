@@ -1,11 +1,9 @@
 <?php
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 namespace CTIMT\MyOrm\Adapter;
 
 use CTIMT\MyOrm\Entity\HasFilterInterface;
@@ -22,20 +20,23 @@ use CTIMT\MyOrm\Model\ObserverInterface;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class Filter implements ModelVisitorInterface, SelectVisitorInterface, ObserverInterface {
+class Filter implements ModelVisitorInterface, SelectVisitorInterface, ObserverInterface
+{
 
     const FIELD = 'filter';
 
     private $_searchKeyValue = [];
     private $_validFields = [];
 
-    public function update(Model $model, $eventName) {
+    public function update(Model $model, $eventName)
+    {
         if ($eventName == ModelEvents::LAYOUT_COLLECTION_APPLIED) {
             $this->addFilterToLayout($model);
         }
     }
 
-    public function visitModel(Model $model) {
+    public function visitModel(Model $model)
+    {
         if ($model->getEntity() instanceof HasFilterInterface) {
             $model->attach($this);
             $this->setValidFields($model->getEntity()->getFilters());
@@ -43,35 +44,40 @@ class Filter implements ModelVisitorInterface, SelectVisitorInterface, ObserverI
         }
     }
 
-    public function visitSelect(Select $select) {
+    public function visitSelect(Select $select)
+    {
         if (count($this->getSearchKeyValue())) {
             $select->setWhere(new WhereStatement($this->getSearchKeyValue(), WhereStatement::JOIN_TYPE_AND, SearchTypes::CONTAINS));
         }
     }
 
-    public function addFilterToLayout(Model $model) {
+    public function addFilterToLayout(Model $model)
+    {
         $data = $model->getData();
         $data[LayoutKeys::META_KEY][self::FIELD]['active'] = $this->getSearchKeyValue();
         $data[LayoutKeys::META_KEY][self::FIELD]['fields'] = $this->getValidFields();
         $model->setData($data);
     }
 
-    public function getSearchKeyValue() {
+    public function getSearchKeyValue()
+    {
         return $this->_searchKeyValue;
     }
 
-    public function setSearchKeyValue($searchKeyValue) {
+    public function setSearchKeyValue($searchKeyValue)
+    {
         $this->_searchKeyValue = $searchKeyValue;
         return $this;
     }
 
-    public function getValidFields() {
+    public function getValidFields()
+    {
         return $this->_validFields;
     }
 
-    public function setValidFields($validFields) {
+    public function setValidFields($validFields)
+    {
         $this->_validFields = $validFields;
         return $this;
     }
-
 }

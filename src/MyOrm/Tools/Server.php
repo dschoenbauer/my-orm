@@ -1,24 +1,26 @@
-<?php
-
-namespace CTIMT\MyOrm\Tools;
+<?php namespace CTIMT\MyOrm\Tools;
 
 /**
  * Description of ServerUrl
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class Server {
+class Server
+{
 
-    public static function getUrl(array $paramters) {
-        $server = $_SERVER;
-        $url = 'http' . (isset($server['HTTPS']) ? 's' : '') . '://' . "{$server['HTTP_HOST']}{$server['SCRIPT_NAME']}?" . http_build_query($paramters);
-        return html_entity_decode($url);
-    }
-    
-    public static function getRelativePath(array $paramters) {
-        $server = $_SERVER;
-        $url = "{$server['SCRIPT_NAME']}?" . http_build_query($paramters);
+    public static function getUrl(array $paramters)
+    {
+        $http = filter_input(INPUT_SERVER, 'HTTPS', FILTER_SANITIZE_STRING);
+        $host = filter_input(INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_STRING);
+        $script = filter_input(INPUT_SERVER, 'SCRIPT_NAME', FILTER_SANITIZE_STRING);
+        $url = 'http' . ($http ? 's' : '') . '://' . "{$host}{$script}?" . http_build_query($paramters);
         return html_entity_decode($url);
     }
 
+    public static function getRelativePath(array $paramters)
+    {
+        $script = filter_input(INPUT_SERVER, 'SCRIPT_NAME', FILTER_SANITIZE_STRING);
+        $url = "{$script}?" . http_build_query($paramters);
+        return html_entity_decode($url);
+    }
 }

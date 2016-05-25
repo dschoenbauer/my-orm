@@ -1,6 +1,4 @@
-<?php
-
-namespace CTIMT\MyOrm\Exception\Platform;
+<?php namespace CTIMT\MyOrm\Exception\Platform;
 
 use BadMethodCallException as BadMethodCall;
 use CTIMT\MyOrm\Exception\ExceptionInterface;
@@ -10,6 +8,7 @@ use CTIMT\MyOrm\Exception\ExceptionInterface;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class BadMethodCallException extends BadMethodCall implements ExceptionInterface {
+class BadMethodCallException extends BadMethodCall implements ExceptionInterface
+{
     
 }

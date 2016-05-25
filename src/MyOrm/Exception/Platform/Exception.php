@@ -1,6 +1,4 @@
-<?php
-
-namespace CTIMT\MyOrm\Exception\Platform;
+<?php namespace CTIMT\MyOrm\Exception\Platform;
 
 use CTIMT\MyOrm\Exception\ExceptionInterface;
 use Exception as Exc;
@@ -10,6 +8,7 @@ use Exception as Exc;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class Exception extends Exc implements ExceptionInterface {
+class Exception extends Exc implements ExceptionInterface
+{
     
 }

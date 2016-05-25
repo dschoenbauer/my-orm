@@ -1,6 +1,4 @@
-<?php
-
-namespace CTIMT\MyOrm\DataProvider;
+<?php namespace CTIMT\MyOrm\DataProvider;
 
 use CTIMT\MyOrm\Exception\DataProvider\MissingParameter;
 use PDO;
@@ -10,7 +8,8 @@ use PDO;
  *
  * @author David
  */
-abstract class AbstractDataProvider implements DataProviderInterface {
+abstract class AbstractDataProvider implements DataProviderInterface
+{
 
     private $_parameters = null;
     private $_pdo;
@@ -18,13 +17,15 @@ abstract class AbstractDataProvider implements DataProviderInterface {
     private $_defaultValue = [];
     private $_fetchFlat = false;
 
-    public function __construct(PDO $pdo, array $parameters) {
+    public function __construct(PDO $pdo, array $parameters)
+    {
         $this->setPdo($pdo)->validateParameters($parameters);
     }
 
     abstract protected function validateParameters($parameters);
 
-    public function getData() {
+    public function getData()
+    {
         $stmts = $this->getPdo()->prepare($this->getSql());
         $stmts->execute($this->getParameters());
         if ($this->getFetchFlat()) {
@@ -33,11 +34,13 @@ abstract class AbstractDataProvider implements DataProviderInterface {
         return $stmts->fetchAll($this->getFetchStyle()) ? : $this->getDefaultValue();
     }
 
-    public function getParameters() {
+    public function getParameters()
+    {
         return $this->_parameters;
     }
 
-    protected function setParameters($parameters) {
+    protected function setParameters($parameters)
+    {
         $this->_parameters = $parameters;
         return $this;
     }
@@ -46,38 +49,46 @@ abstract class AbstractDataProvider implements DataProviderInterface {
      * 
      * @return PDO
      */
-    function getPdo() {
+    function getPdo()
+    {
         return $this->_pdo;
     }
 
-    function setPdo(PDO $pdo) {
+    function setPdo(PDO $pdo)
+    {
         $this->_pdo = $pdo;
         return $this;
     }
 
-    function getFetchStyle() {
+    function getFetchStyle()
+    {
         return $this->_fetchStyle;
     }
 
-    function setFetchStyle($fetchStyle) {
+    function setFetchStyle($fetchStyle)
+    {
         $this->_fetchStyle = $fetchStyle;
         return $this;
     }
 
-    function getDefaultValue() {
+    function getDefaultValue()
+    {
         return $this->_defaultValue;
     }
 
-    function setDefaultValue($defaultValue) {
+    function setDefaultValue($defaultValue)
+    {
         $this->_defaultValue = $defaultValue;
         return $this;
     }
 
-    function getFetchFlat() {
+    function getFetchFlat()
+    {
         return $this->_fetchFlat;
     }
 
-    function setFetchFlat($fetchFlat = true) {
+    function setFetchFlat($fetchFlat = true)
+    {
         $this->_fetchFlat = $fetchFlat;
         return $this;
     }
@@ -89,7 +100,8 @@ abstract class AbstractDataProvider implements DataProviderInterface {
      * @return boolean true for no errors
      * @throws MissingParameter
      */
-    protected function validateExistance($field, $parameters) {
+    protected function validateExistance($field, $parameters)
+    {
         if (is_array($field) && count(array_intersect($field, array_keys($parameters))) == 0) {
             throw new MissingParameter($field);
         } elseif (!is_array($field) && !array_key_exists($field, $parameters)) {
@@ -104,10 +116,10 @@ abstract class AbstractDataProvider implements DataProviderInterface {
      * @param array $parameters the parameters provided by the client on of the field values must be a key in there.
      * @return string the first field in the list of field
      */
-    protected function getField(array $fields, $parameters) {
+    protected function getField(array $fields, $parameters)
+    {
         $this->validateExistance($fields, $parameters);
         $matchedFields = array_intersect($fields, array_keys($parameters));
         return reset($matchedFields);
     }
-
 }

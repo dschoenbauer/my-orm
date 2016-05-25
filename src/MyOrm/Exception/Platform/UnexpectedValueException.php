@@ -1,6 +1,4 @@
-<?php
-
-namespace CTIMT\MyOrm\Exception\Platform;
+<?php namespace CTIMT\MyOrm\Exception\Platform;
 
 use CTIMT\MyOrm\Exception\ExceptionInterface;
 use UnexpectedValueException as UnexpectedValue;
@@ -13,6 +11,7 @@ use UnexpectedValueException as UnexpectedValue;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class UnexpectedValueException extends UnexpectedValue implements ExceptionInterface {
+class UnexpectedValueException extends UnexpectedValue implements ExceptionInterface
+{
     
 }

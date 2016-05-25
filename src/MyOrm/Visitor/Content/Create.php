@@ -1,6 +1,4 @@
-<?php
-
-namespace CTIMT\MyOrm\Visitor\Content;
+<?php namespace CTIMT\MyOrm\Visitor\Content;
 
 use CTIMT\MyOrm\Model\Model;
 use CTIMT\MyOrm\Model\ModelVisitorInterface;
@@ -10,10 +8,11 @@ use CTIMT\MyOrm\Model\ModelVisitorInterface;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class Create implements ModelVisitorInterface {
+class Create implements ModelVisitorInterface
+{
 
-    public function visitModel(Model $model) {
+    public function visitModel(Model $model)
+    {
         $model->setId($model->getQuery()->insert($model->getEntity()->getTable(), $model->getData()));
     }
-
 }

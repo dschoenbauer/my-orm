@@ -1,6 +1,4 @@
-<?php
-
-namespace CTIMT\MyOrm\Adapter;
+<?php namespace CTIMT\MyOrm\Adapter;
 
 use CTIMT\MyOrm\Enum\ErrorMessages;
 use CTIMT\MyOrm\Exception\Adapter\NonComittableException;
@@ -11,24 +9,28 @@ use PDO;
  *
  * @author David
  */
-class Query {
+class Query
+{
 
     use ArrayToKeyTrait;
 
     private $_adapter;
 
-    public function __construct(PDO $adapter) {
+    public function __construct(PDO $adapter)
+    {
         $this->setAdapter($adapter);
     }
 
     /**
      * @return PDO Description
      */
-    function getAdapter() {
+    function getAdapter()
+    {
         return $this->_adapter;
     }
 
-    function setAdapter(PDO $adapter) {
+    function setAdapter(PDO $adapter)
+    {
         $this->_adapter = $adapter;
         return $this;
     }
@@ -41,7 +43,8 @@ class Query {
      * @return mixed last insert id
      * @throws NonComittableException
      */
-    public function insert($table, array $fieldValueArray) {
+    public function insert($table, array $fieldValueArray)
+    {
         try {
             $sqlTemplate = "INSERT INTO %s (%s) VALUES (:%s)";
             $sql = sprintf($sqlTemplate, $table, implode(', ', array_keys($fieldValueArray)), implode(', :', array_keys($fieldValueArray)));
@@ -62,7 +65,8 @@ class Query {
      * @return boolean true on success
      * @throws NonComittableException
      */
-    public function update($table, array $fieldValueArray, WhereStatement $whereStatement = null) {
+    public function update($table, array $fieldValueArray, WhereStatement $whereStatement = null)
+    {
         try {
             $sets = $this->arrayToKeyedArray($fieldValueArray);
             if ($whereStatement instanceof WhereStatement) {
@@ -85,7 +89,8 @@ class Query {
      * @return boolean true on success
      * @throws NonComittableException
      */
-    public function delete($table, WhereStatement $whereStatement = null) {
+    public function delete($table, WhereStatement $whereStatement = null)
+    {
         try {
             $sqlTemplate = 'DELETE %1$s.* FROM %1$s';
             $sql = sprintf($sqlTemplate, $table);
@@ -100,7 +105,8 @@ class Query {
         }
     }
 
-    public function select($table, array $fields, WhereStatement $whereStatement = null, $fetchFlat = false, $fetchStyle = \PDO::FETCH_ASSOC, $defaultValue = []) {
+    public function select($table, array $fields, WhereStatement $whereStatement = null, $fetchFlat = false, $fetchStyle = \PDO::FETCH_ASSOC, $defaultValue = [])
+    {
         $sqlTempalate = "SELECT %s FROM %s";
         $sql = sprintf($sqlTempalate, implode(',', $fields), $table);
         if ($whereStatement instanceof WhereStatement) {
@@ -117,5 +123,4 @@ class Query {
         }
         return $stmt->fetchAll($fetchStyle) ? : $defaultValue;
     }
-
 }

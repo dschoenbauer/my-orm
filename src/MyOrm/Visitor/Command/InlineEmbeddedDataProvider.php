@@ -1,6 +1,4 @@
-<?php
-
-namespace CTIMT\MyOrm\Visitor\Command;
+<?php namespace CTIMT\MyOrm\Visitor\Command;
 
 use CTIMT\MyOrm\Entity\EntityInterface;
 use CTIMT\MyOrm\Enum\LayoutKeys;
@@ -12,19 +10,23 @@ use CTIMT\MyOrm\Model\ModelVisitorInterface;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class InlineEmbeddedDataProvider implements ModelVisitorInterface {
+class InlineEmbeddedDataProvider implements ModelVisitorInterface
+{
 
     private $_entities = [];
-    
-    public function __construct(EntityInterface $embeddedEntity) {
+
+    public function __construct(EntityInterface $embeddedEntity)
+    {
         $this->addEmbeddedEntity($embeddedEntity);
     }
-    
-    public function visitModel(Model $model) {
+
+    public function visitModel(Model $model)
+    {
         $model->setData($this->buildInline($model->getData(), $model->getEntity()));
     }
-    
-    private function buildInline($data, EntityInterface $entity){
+
+    private function buildInline($data, EntityInterface $entity)
+    {
         $compiledData = array_intersect_key($data, array_fill_keys($entity->getAllFields(), null));
 
         $entities = $this->getEntities();
@@ -35,13 +37,13 @@ class InlineEmbeddedDataProvider implements ModelVisitorInterface {
         return $compiledData;
     }
 
-    public function getEntities() {
+    public function getEntities()
+    {
         return $this->_entities;
     }
 
-    public function addEmbeddedEntity(EntityInterface $embeddedEntity){
+    public function addEmbeddedEntity(EntityInterface $embeddedEntity)
+    {
         $this->_entities[] = $embeddedEntity;
     }
-    
-
 }

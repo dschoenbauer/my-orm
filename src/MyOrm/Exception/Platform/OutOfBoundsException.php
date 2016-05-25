@@ -1,6 +1,4 @@
-<?php
-
-namespace CTIMT\MyOrm\Exception\Platform;
+<?php namespace CTIMT\MyOrm\Exception\Platform;
 
 use CTIMT\MyOrm\Exception\ExceptionInterface;
 use OutOfBoundsException as OutOfBounds;
@@ -10,6 +8,7 @@ use OutOfBoundsException as OutOfBounds;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class OutOfBoundsException extends OutOfBounds implements ExceptionInterface {
+class OutOfBoundsException extends OutOfBounds implements ExceptionInterface
+{
     
 }

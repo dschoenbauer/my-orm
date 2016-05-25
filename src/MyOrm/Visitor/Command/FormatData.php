@@ -1,6 +1,4 @@
-<?php
-
-namespace CTIMT\MyOrm\Visitor\Command;
+<?php namespace CTIMT\MyOrm\Visitor\Command;
 
 use CTIMT\MyOrm\Entity\HasBoolFieldsInterface;
 use CTIMT\MyOrm\Entity\HasDateFieldsInterface;
@@ -18,12 +16,15 @@ use DateTimeZone;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class FormatData implements ModelVisitorInterface {
+class FormatData implements ModelVisitorInterface
+{
 
-    public function visitModel(Model $model) {
+    public function visitModel(Model $model)
+    {
         $data = $model->getData();
-        array_walk_recursive($data, function(&$value, $key) use($model) {
-            if ($model->getEntity() instanceof HasBoolFieldsInterface && in_array($key, $model->getEntity()->getBoolFields())) {
+        array_walk_recursive($data, function (&$value, $key) use ($model) {
+            if ($model->getEntity() instanceof HasBoolFieldsInterface &&
+                in_array($key, $model->getEntity()->getBoolFields())) {
                 $value = boolval($value);
                 return;
             }
@@ -31,15 +32,18 @@ class FormatData implements ModelVisitorInterface {
                 $value = null;
                 return;
             }
-            if ($model->getEntity() instanceof HasNumericFieldsInterface && in_array($key, $model->getEntity()->getNumericFields())) {
+            if ($model->getEntity() instanceof HasNumericFieldsInterface &&
+                in_array($key, $model->getEntity()->getNumericFields())) {
                 $value = (int) $value;
                 return;
             }
-            if ($model->getEntity() instanceof HasDateFieldsInterface && in_array($key, $model->getEntity()->getDateFields()) && $value ){
+            if ($model->getEntity() instanceof HasDateFieldsInterface &&
+                in_array($key, $model->getEntity()->getDateFields()) &&
+                $value) {
                 $timeZone = $model->getAttribute(ModelAttributes::TIME_ZONE, Defaults::TIME_ZONE);
-                if($value instanceof DateTime){
+                if ($value instanceof DateTime) {
                     $value = new DateTime($value->format(Formats::MYSQL_DATE_TIME), new DateTimeZone($timeZone));
-                }else{
+                } else {
                     $value = new DateTime($value, new DateTimeZone($timeZone));
                 }
                 $value->offset = $value->format('P');
@@ -48,6 +52,5 @@ class FormatData implements ModelVisitorInterface {
             }
         });
         $model->setData($data);
-
     }
 }

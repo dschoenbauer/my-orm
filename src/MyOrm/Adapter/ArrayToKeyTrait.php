@@ -1,6 +1,4 @@
-<?php
-
-namespace CTIMT\MyOrm\Adapter;
+<?php namespace CTIMT\MyOrm\Adapter;
 
 use CTIMT\MyOrm\Enum\SearchTypes;
 
@@ -9,12 +7,13 @@ use CTIMT\MyOrm\Enum\SearchTypes;
  *
  * @author David
  */
-trait ArrayToKeyTrait {
+trait ArrayToKeyTrait
+{
 
-    public function arrayToKeyedArray($data, $searchType = SearchTypes::EQUAL) {
+    public function arrayToKeyedArray($data, $searchType = SearchTypes::EQUAL)
+    {
         return array_map(function($value) use($searchType) {
             return sprintf($searchType, $value);
         }, array_keys($data));
     }
-
 }

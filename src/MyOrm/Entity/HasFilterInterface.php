@@ -1,10 +1,11 @@
-<?php
-namespace CTIMT\MyOrm\Entity;
+<?php namespace CTIMT\MyOrm\Entity;
 
 /**
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-interface HasFilterInterface {
+interface HasFilterInterface
+{
+
     public function getFilters();
 }

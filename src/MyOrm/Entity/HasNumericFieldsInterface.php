@@ -1,12 +1,11 @@
-<?php
-
-namespace CTIMT\MyOrm\Entity;
+<?php namespace CTIMT\MyOrm\Entity;
 
 /**
  *
  * @author David
  */
-interface HasNumericFieldsInterface {
+interface HasNumericFieldsInterface
+{
 
     public function getNumericFields();
 }

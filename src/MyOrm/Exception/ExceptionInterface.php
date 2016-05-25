@@ -1,5 +1,4 @@
-<?php
-namespace CTIMT\MyOrm\Exception;
+<?php namespace CTIMT\MyOrm\Exception;
 
 /**
  * Default Exception interface for the library. All Exceptions should have a
@@ -7,6 +6,7 @@ namespace CTIMT\MyOrm\Exception;
  * 
  * @author David
  */
-interface ExceptionInterface {
+interface ExceptionInterface
+{
     
 }

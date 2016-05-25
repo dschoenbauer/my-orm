@@ -1,6 +1,4 @@
-<?php
-
-namespace CTIMT\MyOrm\Exception\Platform;
+<?php namespace CTIMT\MyOrm\Exception\Platform;
 
 use CTIMT\MyOrm\Exception\ExceptionInterface;
 use RangeException as Range;
@@ -12,6 +10,7 @@ use RangeException as Range;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class RangeException extends Range implements ExceptionInterface {
+class RangeException extends Range implements ExceptionInterface
+{
     
 }

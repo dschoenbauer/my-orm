@@ -1,6 +1,4 @@
-<?php
-
-namespace CTIMT\MyOrm\Exception\Platform;
+<?php namespace CTIMT\MyOrm\Exception\Platform;
 
 use CTIMT\MyOrm\Exception\ExceptionInterface;
 use LengthException as Length;
@@ -10,6 +8,7 @@ use LengthException as Length;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class LengthException extends Length implements ExceptionInterface {
+class LengthException extends Length implements ExceptionInterface
+{
     
 }

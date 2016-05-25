@@ -1,6 +1,4 @@
-<?php
-
-namespace CTIMT\MyOrm\Exception\Platform;
+<?php namespace CTIMT\MyOrm\Exception\Platform;
 
 use CTIMT\MyOrm\Exception\ExceptionInterface;
 use RuntimeException as Runtime;
@@ -10,6 +8,7 @@ use RuntimeException as Runtime;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class RuntimeException extends Runtime implements ExceptionInterface {
+class RuntimeException extends Runtime implements ExceptionInterface
+{
     
 }

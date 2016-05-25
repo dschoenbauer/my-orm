@@ -1,6 +1,4 @@
-<?php
-
-namespace CTIMT\MyOrm\Exception\Http;
+<?php namespace CTIMT\MyOrm\Exception\Http;
 
 use CTIMT\MyOrm\Exception\Platform\InvalidArgumentException;
 
@@ -11,10 +9,11 @@ use CTIMT\MyOrm\Exception\Platform\InvalidArgumentException;
  *
  * @author David
  */
-class Conflict extends InvalidArgumentException implements HttpExceptionInterface {
+class Conflict extends InvalidArgumentException implements HttpExceptionInterface
+{
 
-    public function __construct($reasonForError) {
+    public function __construct($reasonForError)
+    {
         parent::__construct($reasonForError, 409);
     }
-
 }

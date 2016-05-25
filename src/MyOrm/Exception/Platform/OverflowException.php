@@ -1,6 +1,4 @@
-<?php
-
-namespace CTIMT\MyOrm\Exception\Platform;
+<?php namespace CTIMT\MyOrm\Exception\Platform;
 
 use CTIMT\MyOrm\Exception\ExceptionInterface;
 use OverflowException as Overflow;
@@ -10,6 +8,7 @@ use OverflowException as Overflow;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class OverflowException extends Overflow implements ExceptionInterface {
+class OverflowException extends Overflow implements ExceptionInterface
+{
     
 }

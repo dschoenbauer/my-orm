@@ -1,5 +1,4 @@
-<?php
-namespace CTIMT\MyOrm\Visitor\Content;
+<?php namespace CTIMT\MyOrm\Visitor\Content;
 
 use CTIMT\MyOrm\Adapter\WhereStatement;
 use CTIMT\MyOrm\Model\Model;
@@ -10,11 +9,12 @@ use CTIMT\MyOrm\Model\ModelVisitorInterface;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class Delete implements ModelVisitorInterface {
+class Delete implements ModelVisitorInterface
+{
 
-    public function visitModel(Model $model) {
+    public function visitModel(Model $model)
+    {
         $where = new WhereStatement([$model->getEntity()->getIdField() => $model->getId()]);
         $model->getQuery()->delete($model->getEntity()->getTable(), $where);
     }
-
 }
