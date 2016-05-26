@@ -8,5 +8,8 @@
 interface SelectVisitorInterface
 {
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function visitSelect(Select $select);
 }

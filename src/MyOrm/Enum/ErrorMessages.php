@@ -8,6 +8,7 @@
 class ErrorMessages
 {
 
+    const DATA_TYPE_INVALID = '%s is expected to be a %s';
     const DATA_PROVIDER_MISSING_PARAMETER = 'You need to provide field: %s';
     const DATA_PROVIDER_MISSING_PARAMETERS = 'You need to provide one of the following fields: %s';
     const ADAPTER_MISSING_KEYS = 'Field:%s is missing. Required fields are: %s';
@@ -21,9 +22,4 @@ class ErrorMessages
     const QUERY_DELETE_EXCEPTION = "";
     const INVALID_FILTER = 'Filter key: %s is invalid. Valid keys are: %s';
     const INVALID_FIELD = 'Fields: %s is invalid. Valid fields are: %s';
-
-    public static function invalidDataType($field, $expectedDataType)
-    {
-        return sprintf('%s is expected to be a %s', $field, $expectedDataType);
-    }
 }

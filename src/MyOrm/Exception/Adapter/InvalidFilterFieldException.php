@@ -11,7 +11,7 @@ use CTIMT\MyOrm\Exception\Http\UnprocessableEntity;
 class InvalidFilterFieldException extends UnprocessableEntity
 {
 
-    public function __construct($invalidKey, $validKeys)
+    public function __construct($invalidKey,array $validKeys)
     {
         $message = sprintf(ErrorMessages::INVALID_FILTER, $invalidKey, implode(', ', $validKeys));
         parent::__construct($message);

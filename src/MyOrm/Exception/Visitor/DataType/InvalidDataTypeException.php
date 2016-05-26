@@ -13,6 +13,6 @@ class InvalidDataTypeException extends UnprocessableEntity
 
     public function __construct($field, $expectedDataType)
     {
-        parent::__construct(ErrorMessages::invalidDataType($field, $expectedDataType));
+        parent::__construct(sprintf(ErrorMessages::DATA_TYPE_INVALID, $field, $expectedDataType));
     }
 }

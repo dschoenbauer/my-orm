@@ -29,57 +29,62 @@ class Alias implements ModelVisitorInterface, ObserverInterface
     public function update(Model $model, $eventName)
     {
         if ($eventName == ModelEvents::LAYOUT_COLLECTION_APPLIED) {
-            $this->addAliasToCollectionLayout($model);
+            $model->setData($this->addAliasToCollectionLayout($model->getData(), $model->getEntity()->getName()));
         }
 
         if ($eventName == ModelEvents::LAYOUT_ENTITY_APPLIED) {
-            $this->addAliasToEntityLayout($model);
+            $model->setData($this->addAliasToEntityLayout($model->getData()));
         }
 
         if ($eventName == ModelEvents::VALIDATE) {
-            $this->reverseAlias($model);
+            $model->setData($this->reverseAlias($model->getData()));
         }
+        return true;
     }
 
+    /**
+     * @covers CTIMT\MyOrm\Adapter\Alias::visitModel
+     */
     public function visitModel(Model $model)
     {
-        $this->setMapping($this->validateMapping($model, ModelAttributes::ALIAS));
-        if (count($this->getMapping())) {
+        $validFields = $model->getEntity()->getAllFields();
+        $userFields = $model->getAttribute(ModelAttributes::ALIAS, []);
+        $this->setMapping($this->validateMapping($userFields, $validFields));
+        if (count($this->getMapping()))
             $model->attach($this);
-        }
+        return null;
     }
 
-    protected function addAliasToCollectionLayout(Model $model)
+    public function addAliasToCollectionLayout(array $data, $entityName)
     {
-        $data = $model->getData();
         $data[LayoutKeys::META_KEY][self::FIELD] = $this->getMapping();
-        $content = $data[$model->getEntity()->getName()];
-        $data[$model->getEntity()->getName()] = $this->remapData($content, $this->getMapping());
-        $model->setData($data);
+        $content = $data[$entityName];
+        $data[$entityName] = $this->remapData($content, $this->getMapping());
+        return $data;
     }
 
-    protected function addAliasToEntityLayout(Model $model)
+    public function addAliasToEntityLayout(array $data)
     {
-        $data = $model->getData();
         $data[LayoutKeys::META_KEY][self::FIELD] = $this->getMapping();
-        $model->setData($this->remapRow($data, $this->getMapping()));
+        return $this->remapRow($data, $this->getMapping());
     }
 
-    protected function reverseAlias(Model $model)
+    public function reverseAlias(array $data)
     {
         $mapping = array_flip($this->getMapping());
-        $model->setData($this->remapRow($model->getData(), $mapping));
+        return $this->remapRow($data, $mapping);
     }
 
-    protected function remapData(array $data, array $mapping)
+    public function remapData(array $data)
     {
+        $mapping = $this->getMapping();
         foreach ($data as $key => $row) {
             $data[$key] = $this->remapRow($row, $mapping);
         }
         return $data;
     }
 
-    protected function remapRow(array $row, array $mapping)
+    public function remapRow(array $row, $mapping)
     {
         $newRow = [];
         foreach ($row as $key => $value) {
@@ -88,15 +93,14 @@ class Alias implements ModelVisitorInterface, ObserverInterface
         return $newRow;
     }
 
-    protected function validateMapping(Model $model, $attributeName)
+    public function validateMapping(array $userAliases, array $validFields)
     {
-        $aliases = array_keys($model->getAttribute($attributeName, []));
-        $validFields = $model->getEntity()->getAllFields();
+        $aliases = array_keys($userAliases);
         $invalidFields = array_diff($aliases, $validFields);
         if (count($invalidFields)) {
             throw new InvalidAliasKeyException($invalidFields, $validFields);
         }
-        return $model->getAttribute($attributeName, []);
+        return $userAliases;
     }
 
     public function getMapping()
