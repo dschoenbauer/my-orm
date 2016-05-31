@@ -13,6 +13,7 @@ use CTIMT\MyOrm\Adapter\Sort;
 use CTIMT\MyOrm\Adapter\StaticValue;
 use CTIMT\MyOrm\Entity\EntityInterface;
 use CTIMT\MyOrm\Enum\ModelActions;
+use CTIMT\MyOrm\Enum\ModelEvents;
 use CTIMT\MyOrm\Enum\ModelExecutionPriority;
 use CTIMT\MyOrm\Model\Model;
 use CTIMT\MyOrm\Visitor\Command\ValidateData;
@@ -64,8 +65,8 @@ class StandardModelBuilder implements ModelBuilderInterface
     public function addDataTypeValidations()
     {
         $this->getModel()
-            ->accept(new Alias())
-            ->accept(new ClearId())
+            ->accept(new Alias([ModelEvents::VALIDATE]))
+            ->accept(new ClearId([ModelEvents::VALIDATE]))
             ->accept(new DefaultValue())
             ->accept(new StaticValue())
             ->accept(new ValidFieldsFilter())
