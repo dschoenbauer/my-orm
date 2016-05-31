@@ -69,6 +69,7 @@ class Query
     {
         try {
             $sets = $this->arrayToKeyedArray($fieldValueArray);
+            $where = '';
             if ($whereStatement instanceof WhereStatement) {
                 $where = sprintf("WHERE %s", $whereStatement->getStatment());
                 $fieldValueArray = array_merge($fieldValueArray, $whereStatement->getParameters());
@@ -92,7 +93,7 @@ class Query
     public function delete($table, WhereStatement $whereStatement = null)
     {
         try {
-            $sqlTemplate = 'DELETE %1$s.* FROM %1$s';
+            $sqlTemplate = 'DELETE FROM %1$s';
             $sql = sprintf($sqlTemplate, $table);
             if ($whereStatement instanceof WhereStatement) {
                 $where = sprintf(" WHERE %s", $whereStatement->getStatment());

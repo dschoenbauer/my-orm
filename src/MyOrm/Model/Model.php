@@ -3,7 +3,6 @@
 use CTIMT\MyOrm\Adapter\Query;
 use CTIMT\MyOrm\Entity\AbstractEntity;
 use CTIMT\MyOrm\Enum\ModelActions;
-use CTIMT\MyOrm\Enum\ModelEvents;
 use Exception;
 
 /*
