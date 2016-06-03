@@ -2,45 +2,38 @@
 
 use CTIMT\MyOrm\Enum\LayoutKeys;
 use CTIMT\MyOrm\Enum\ModelAttributes;
-use CTIMT\MyOrm\Enum\ModelEvents;
 use CTIMT\MyOrm\Exception\Adapter\InvalidFieldsFieldException;
 use CTIMT\MyOrm\Model\Model;
 use CTIMT\MyOrm\Model\ModelVisitorInterface;
-use CTIMT\MyOrm\Model\ObserverInterface;
 
 /**
  * Description of Fields
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class Fields implements ModelVisitorInterface, SelectVisitorInterface, ObserverInterface
+class Fields extends AbstractAdapter implements ModelVisitorInterface, SelectVisitorInterface
 {
 
     const FIELDS_HIDDEN = "hidden";
     const FIELDS_ACTIVE = "active";
     const FIELDS = "fields";
 
-    private $_userLimitedFields = [];
+    private $userLimitedFields = [];
+    private $validFields = [];
 
     public function visitModel(Model $model)
     {
-        $this->loadUserString($model->getAttribute(ModelAttributes::FIELDS, []), $model);
-        $model->attach($this);
-    }
-
-    public function loadUserString($userString, Model $model)
-    {
-        $validFields = $model->getEntity()->getAllFields();
-        $userFields = $this->parseFields($userString);
-        $this->validateFields($validFields, $userFields);
-        $this->setUserLimitedFields($userFields);
-    }
-
-    public function update(Model $model, $eventName)
-    {
-        if (count($this->getUserLimitedFields()) && in_array($eventName, [ModelEvents::LAYOUT_COLLECTION_APPLIED, ModelEvents::LAYOUT_ENTITY_APPLIED])) {
-            $this->showFields($model);
+        $this
+            ->setValidFields($model->getEntity()->getAllFields())
+            ->setUserLimitedFields($this->parseFields($model->getAttribute(ModelAttributes::FIELDS, '')));
+        if (count($this->getUserLimitedFields())) {
+            $model->attach($this);
         }
+    }
+
+    protected function updateObserver(Model $model)
+    {
+        $model->setData($this->showFields($model->getData()));
     }
 
     public function visitSelect(Select $select)
@@ -50,35 +43,46 @@ class Fields implements ModelVisitorInterface, SelectVisitorInterface, ObserverI
         }
     }
 
-    protected function parseFields($userString)
+    public function parseFields($userString)
     {
         return array_filter(explode(',', $userString));
     }
 
-    protected function validateFields($validFields, $userFields)
+    protected function validateFields($userFields)
     {
-        $inValidFields = array_diff($userFields, $validFields);
+        $inValidFields = array_diff($userFields, $this->getValidFields());
         if (count($inValidFields)) {
-            throw new InvalidFieldsFieldException($inValidFields, $validFields);
+            throw new InvalidFieldsFieldException($inValidFields, $this->getValidFields());
         }
     }
 
-    private function showFields(Model $model)
+    public function showFields(array $data)
     {
-        $data = $model->getData();
-        $data[LayoutKeys::META_KEY][self::FIELDS][self::FIELDS_HIDDEN] = array_values(array_diff($model->getEntity()->getAllFields(), $this->getUserLimitedFields()));
+        $data[LayoutKeys::META_KEY][self::FIELDS][self::FIELDS_HIDDEN] = array_values(array_diff($this->getValidFields(), $this->getUserLimitedFields()));
         $data[LayoutKeys::META_KEY][self::FIELDS][self::FIELDS_ACTIVE] = $this->getUserLimitedFields();
-        $model->setData($data);
+        return $data;
     }
 
     public function getUserLimitedFields()
     {
-        return $this->_userLimitedFields;
+        return $this->userLimitedFields;
     }
 
-    public function setUserLimitedFields($userLimitedFields)
+    public function setUserLimitedFields(array $userLimitedFields)
     {
-        $this->_userLimitedFields = $userLimitedFields;
+        $this->validateFields($userLimitedFields);
+        $this->userLimitedFields = $userLimitedFields;
+        return $this;
+    }
+
+    public function getValidFields()
+    {
+        return $this->validFields;
+    }
+
+    public function setValidFields(array $validFields)
+    {
+        $this->validFields = $validFields;
         return $this;
     }
 }

@@ -29,27 +29,34 @@ class StaticValueTest extends \PHPUnit_Framework_TestCase
         
     }
 
-    /**
-     * @covers CTIMT\MyOrm\Adapter\StaticValue::visitModel
-     * @todo   Implement testVisitModel().
-     */
     public function testVisitModel()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+
     }
 
-    /**
-     * @covers CTIMT\MyOrm\Adapter\StaticValue::update
-     * @todo   Implement testUpdate().
-     */
+
     public function testUpdate()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+
+    }
+    
+    public function testEventNames()
+    {
+        $value = ['test'];
+        $this->assertEquals($value,$this->object->setEventNames($value)->getEventNames());
+    }
+    
+    public function testApplyStaticValues(){
+        $data = ['data'=>'value','overridden'=>'neverSeeMe'];
+        $staticData = ['overridden'=>'good Data'];
+        $output = ['data'=>'value','overridden'=>'good Data'];
+        $this->assertEquals($output,$this->object->applyStaticValues($data, $staticData));
+    }
+    
+    public function testApplyStaticValuesAddition(){
+        $data = ['data'=>'value','extraField'=>'extraValue'];
+        $staticData = ['static'=>'good Data'];
+        $output = ['data'=>'value','extraField'=>'extraValue','static'=>'good Data'];
+        $this->assertEquals($output,$this->object->applyStaticValues($data, $staticData));
     }
 }

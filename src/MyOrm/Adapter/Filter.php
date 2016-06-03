@@ -9,18 +9,16 @@ namespace CTIMT\MyOrm\Adapter;
 use CTIMT\MyOrm\Entity\HasFilterInterface;
 use CTIMT\MyOrm\Enum\LayoutKeys;
 use CTIMT\MyOrm\Enum\ModelAttributes;
-use CTIMT\MyOrm\Enum\ModelEvents;
 use CTIMT\MyOrm\Enum\SearchTypes;
 use CTIMT\MyOrm\Model\Model;
 use CTIMT\MyOrm\Model\ModelVisitorInterface;
-use CTIMT\MyOrm\Model\ObserverInterface;
 
 /**
  * Description of Filter
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class Filter implements ModelVisitorInterface, SelectVisitorInterface, ObserverInterface
+class Filter extends AbstractAdapter implements ModelVisitorInterface, SelectVisitorInterface
 {
 
     const FIELD = 'filter';
@@ -28,11 +26,9 @@ class Filter implements ModelVisitorInterface, SelectVisitorInterface, ObserverI
     private $_searchKeyValue = [];
     private $_validFields = [];
 
-    public function update(Model $model, $eventName)
+    protected function updateObserver(Model $model)
     {
-        if ($eventName == ModelEvents::LAYOUT_COLLECTION_APPLIED) {
-            $this->addFilterToLayout($model);
-        }
+        $this->addFilterToLayout($model);
     }
 
     public function visitModel(Model $model)

@@ -5,12 +5,10 @@ use CTIMT\MyOrm\Adapter\SelectVisitorInterface;
 use CTIMT\MyOrm\Entity\IsSortableInterface;
 use CTIMT\MyOrm\Enum\LayoutKeys;
 use CTIMT\MyOrm\Enum\ModelAttributes;
-use CTIMT\MyOrm\Enum\ModelEvents;
 use CTIMT\MyOrm\Enum\SortKeys;
 use CTIMT\MyOrm\Exception\Adapter\InvalidOrderKey;
 use CTIMT\MyOrm\Model\Model;
 use CTIMT\MyOrm\Model\ModelVisitorInterface;
-use CTIMT\MyOrm\Model\ObserverInterface;
 
 /*
  * Copyright 2015 Coe-Truman International.
@@ -21,7 +19,7 @@ use CTIMT\MyOrm\Model\ObserverInterface;
  *
  * @author David
  */
-class Sort implements SelectVisitorInterface, ModelVisitorInterface, ObserverInterface
+class Sort extends AbstractAdapter implements SelectVisitorInterface, ModelVisitorInterface
 {
 
     const KEY = 'sort';
@@ -62,11 +60,9 @@ class Sort implements SelectVisitorInterface, ModelVisitorInterface, ObserverInt
         return $output;
     }
 
-    public function update(Model $model, $eventName)
+    protected function updateObserver(Model $model)
     {
-        if ($eventName == ModelEvents::LAYOUT_COLLECTION_APPLIED) {
-            $this->buildFormatForCollection($model);
-        }
+        $this->buildFormatForCollection($model);
     }
 
     protected function buildFormatForCollection(Model $model)

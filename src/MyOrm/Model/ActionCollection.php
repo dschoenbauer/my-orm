@@ -51,7 +51,7 @@ class ActionCollection
 
     public function run($modelAction)
     {
-        $this->getModel()->setAttribute(ModelAttributes::MODEL_ACTION, $modelAction);
+        $this->getModel()->setAttribute(ModelAttributes::MODEL_CURRENT_ACTION, $modelAction);
         /* Indredibly mean but handles late additions to the queue */
         for ($i = 0; $i < count($this->extractQueue($modelAction)); $i++) {
             $this->getModel()->accept($this->extractQueue($modelAction)[$i]);

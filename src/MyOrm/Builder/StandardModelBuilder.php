@@ -1,6 +1,8 @@
 <?php namespace CTIMT\MyOrm\Builder;
 
 use CTIMT\MyOrm\Adapter\Alias;
+use CTIMT\MyOrm\Adapter\AliasCollectionView;
+use CTIMT\MyOrm\Adapter\AliasEntityView;
 use CTIMT\MyOrm\Adapter\ClearId;
 use CTIMT\MyOrm\Adapter\DefaultValue;
 use CTIMT\MyOrm\Adapter\Fields;
@@ -64,17 +66,18 @@ class StandardModelBuilder implements ModelBuilderInterface
 
     public function addDataTypeValidations()
     {
+        $valiadteEvents = [ModelEvents::VALIDATE];
         $this->getModel()
-            ->accept(new Alias([ModelEvents::VALIDATE]))
-            ->accept(new ClearId([ModelEvents::VALIDATE]))
-            ->accept(new DefaultValue())
-            ->accept(new StaticValue())
-            ->accept(new ValidFieldsFilter())
-            ->accept(new Required())
-            ->accept(new String())
-            ->accept(new Date())
-            ->accept(new Boolean())
-            ->accept(new Numeric())
+            ->accept(new Alias($valiadteEvents))
+            ->accept(new ClearId($valiadteEvents))
+            ->accept(new DefaultValue($valiadteEvents))
+            ->accept(new StaticValue($valiadteEvents))
+            ->accept(new ValidFieldsFilter($valiadteEvents))
+            ->accept(new Required($valiadteEvents))
+            ->accept(new String($valiadteEvents))
+            ->accept(new Date($valiadteEvents))
+            ->accept(new Boolean($valiadteEvents))
+            ->accept(new Numeric($valiadteEvents))
             ->getActions()
             ->add(ModelActions::CREATE, new ValidateData(), ModelExecutionPriority::PRIOR_TO_ACTION)
             ->add(ModelActions::UPDATE, new ValidateData(), ModelExecutionPriority::PRIOR_TO_ACTION);
@@ -98,15 +101,15 @@ class StandardModelBuilder implements ModelBuilderInterface
     {
         $this->getModel()->getActions()
             ->add(ModelActions::FETCH, new Fetch(new Select(), [
-                new Fields(),
-                New Alias()
+                new Fields([ModelEvents::LAYOUT_ENTITY_APPLIED]),
+                new AliasEntityView([ModelEvents::LAYOUT_ENTITY_APPLIED]),
                 ]), ModelExecutionPriority::ACTION)
             ->add(ModelActions::FETCH_ALL, new FetchAllFull(new Select(), [
                 new Fields(),
-                new Sort(),
-                new Filter(),
+                new Sort([ModelEvents::LAYOUT_COLLECTION_APPLIED]),
+                new Filter([ModelEvents::LAYOUT_COLLECTION_APPLIED]),
                 new Pagination(),
-                New Alias()
+                new AliasCollectionView([ModelEvents::LAYOUT_COLLECTION_APPLIED])
                 ]), ModelExecutionPriority::ACTION)
         ;
     }

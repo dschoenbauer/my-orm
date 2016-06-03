@@ -1,17 +1,15 @@
 <?php namespace CTIMT\MyOrm\Adapter;
 
 use CTIMT\MyOrm\Entity\HasStaticValuesInterface;
-use CTIMT\MyOrm\Enum\ModelEvents;
 use CTIMT\MyOrm\Model\Model;
 use CTIMT\MyOrm\Model\ModelVisitorInterface;
-use CTIMT\MyOrm\Model\ObserverInterface;
 
 /**
  * Description of StaticValue
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class StaticValue implements ModelVisitorInterface, ObserverInterface
+class StaticValue extends AbstractAdapter implements ModelVisitorInterface
 {
 
     public function visitModel(Model $model)
@@ -21,10 +19,13 @@ class StaticValue implements ModelVisitorInterface, ObserverInterface
         }
     }
 
-    public function update(Model $model, $eventName)
+    public function applyStaticValues(array $data, array $staticData)
     {
-        if ($eventName == ModelEvents::VALIDATE) {
-            $model->setData(array_merge($model->getData(), $model->getEntity()->getStaticValues()));
-        }
+        return array_merge($data, $staticData);
+    }
+
+    protected function updateObserver(Model $model)
+    {
+        $model->setData($this->applyStaticValues($model->getData(), $model->getEntity()->getStaticValues()));
     }
 }

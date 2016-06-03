@@ -1,11 +1,10 @@
 <?php namespace CTIMT\MyOrm\Visitor\DataType;
 
+use CTIMT\MyOrm\Adapter\AbstractAdapter;
 use CTIMT\MyOrm\Entity\HasDateFieldsInterface;
-use CTIMT\MyOrm\Enum\ModelEvents;
 use CTIMT\MyOrm\Exception\Visitor\DataType\InvalidDataTypeException;
 use CTIMT\MyOrm\Model\Model;
 use CTIMT\MyOrm\Model\ModelVisitorInterface;
-use CTIMT\MyOrm\Model\ObserverInterface;
 use DateTime;
 
 /**
@@ -13,7 +12,7 @@ use DateTime;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class Date implements ModelVisitorInterface, ObserverInterface
+class Date extends AbstractAdapter implements ModelVisitorInterface
 {
 
     public function visitModel(Model $model)
@@ -23,11 +22,9 @@ class Date implements ModelVisitorInterface, ObserverInterface
         }
     }
 
-    public function update(Model $model, $eventName)
+    protected function updateObserver(Model $model)
     {
-        if ($eventName == ModelEvents::VALIDATE) {
-            $this->validate($model);
-        }
+        $this->validate($model);
     }
 
     private function validate(Model $model)

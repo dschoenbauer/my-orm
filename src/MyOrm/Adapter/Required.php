@@ -1,18 +1,16 @@
 <?php namespace CTIMT\MyOrm\Adapter;
 
 use CTIMT\MyOrm\Entity\HasRequiredFieldsInterface;
-use CTIMT\MyOrm\Enum\ModelEvents;
 use CTIMT\MyOrm\Exception\Adapter\MissingPayloadKeyException;
 use CTIMT\MyOrm\Model\Model;
 use CTIMT\MyOrm\Model\ModelVisitorInterface;
-use CTIMT\MyOrm\Model\ObserverInterface;
 
 /**
  * Description of Required
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class Required implements ModelVisitorInterface, ObserverInterface
+class Required extends AbstractAdapter implements ModelVisitorInterface
 {
 
     public function visitModel(Model $model)
@@ -22,11 +20,9 @@ class Required implements ModelVisitorInterface, ObserverInterface
         }
     }
 
-    public function update(Model $model, $eventName)
+    protected function updateObserver(Model $model)
     {
-        if ($eventName == ModelEvents::VALIDATE) {
-            $this->validateFields($model->getEntity()->getRequiredFields(), array_keys($model->getData()));
-        }
+        $this->validateFields($model->getEntity()->getRequiredFields(), array_keys($model->getData()));
     }
 
     protected function validateFields(array $requiredFields, array $currentFields)

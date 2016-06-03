@@ -10,43 +10,22 @@ use CTIMT\MyOrm\Model\ObserverInterface;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class ClearId implements ModelVisitorInterface, ObserverInterface
+class ClearId extends AbstractAdapter implements ModelVisitorInterface, ObserverInterface
 {
-
-    private $_eventNames = [];
-
-    public function __construct(array $eventNames = [])
-    {
-        $this->setEventNames($eventNames);
-    }
-    
 
     public function visitModel(Model $model)
     {
         $model->attach($this);
     }
 
-    public function update(Model $model, $eventName)
+    protected function updateObserver(Model $model)
     {
-        if (in_array($eventName,$this->getEventNames())) {
-            $model->setData($this->clearField($model->getData(), $model->getEntity()->getIdField()));
-        }
+        $model->setData($this->clearField($model->getData(), $model->getEntity()->getIdField()));
     }
 
     public function clearField(array $data, $id)
     {
         unset($data[$id]);
         return $data;
-    }
-
-    public function getEventNames()
-    {
-        return $this->_eventNames;
-    }
-
-    public function setEventNames(array $eventNames)
-    {
-        $this->_eventNames = $eventNames;
-        return $this;
     }
 }

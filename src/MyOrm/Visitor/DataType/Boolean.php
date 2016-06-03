@@ -1,18 +1,17 @@
 <?php namespace CTIMT\MyOrm\Visitor\DataType;
 
+use CTIMT\MyOrm\Adapter\AbstractAdapter;
 use CTIMT\MyOrm\Entity\HasBoolFieldsInterface;
 use CTIMT\MyOrm\Enum\ModelEvents;
-use CTIMT\MyOrm\Exception\Visitor\DataType\InvalidDataTypeException;
 use CTIMT\MyOrm\Model\Model;
 use CTIMT\MyOrm\Model\ModelVisitorInterface;
-use CTIMT\MyOrm\Model\ObserverInterface;
 
 /**
  * Description of Boolean
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class Boolean implements ModelVisitorInterface, ObserverInterface
+class Boolean extends AbstractAdapter implements ModelVisitorInterface
 {
 
     public function visitModel(Model $model)
@@ -22,11 +21,9 @@ class Boolean implements ModelVisitorInterface, ObserverInterface
         }
     }
 
-    public function update(Model $model, $eventName)
+    protected function updateObserver(Model $model)
     {
-        if ($eventName == ModelEvents::VALIDATE) {
-            $this->validate($model);
-        }
+        $this->validate($model);
     }
 
     protected function validate(Model $model)

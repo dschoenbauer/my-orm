@@ -6,40 +6,26 @@
  */
 namespace CTIMT\MyOrm\Adapter;
 
-use CTIMT\MyOrm\Enum\LayoutKeys;
 use CTIMT\MyOrm\Enum\ModelAttributes;
-use CTIMT\MyOrm\Enum\ModelEvents;
 use CTIMT\MyOrm\Exception\Adapter\InvalidAliasKeyException;
 use CTIMT\MyOrm\Model\Model;
 use CTIMT\MyOrm\Model\ModelVisitorInterface;
-use CTIMT\MyOrm\Model\ObserverInterface;
 
 /**
  * Description of Alias
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class Alias implements ModelVisitorInterface, ObserverInterface
+class Alias extends AbstractAdapter implements ModelVisitorInterface
 {
 
     const FIELD = "alias";
 
     private $_mapping = [];
 
-    public function update(Model $model, $eventName)
+    protected function updateObserver(Model $model)
     {
-        if ($eventName == ModelEvents::LAYOUT_COLLECTION_APPLIED) {
-            $model->setData($this->addAliasToCollectionLayout($model->getData(), $model->getEntity()->getName()));
-        }
-
-        if ($eventName == ModelEvents::LAYOUT_ENTITY_APPLIED) {
-            $model->setData($this->addAliasToEntityLayout($model->getData()));
-        }
-
-        if ($eventName == ModelEvents::VALIDATE) {
-            $model->setData($this->reverseAlias($model->getData()));
-        }
-        return true;
+        $model->setData($this->reverseAlias($model->getData()));
     }
 
     /**
@@ -53,20 +39,6 @@ class Alias implements ModelVisitorInterface, ObserverInterface
         if (count($this->getMapping()))
             $model->attach($this);
         return null;
-    }
-
-    public function addAliasToCollectionLayout(array $data, $entityName)
-    {
-        $data[LayoutKeys::META_KEY][self::FIELD] = $this->getMapping();
-        $content = $data[$entityName];
-        $data[$entityName] = $this->remapData($content, $this->getMapping());
-        return $data;
-    }
-
-    public function addAliasToEntityLayout(array $data)
-    {
-        $data[LayoutKeys::META_KEY][self::FIELD] = $this->getMapping();
-        return $this->remapRow($data, $this->getMapping());
     }
 
     public function reverseAlias(array $data)

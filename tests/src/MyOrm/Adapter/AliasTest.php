@@ -75,32 +75,6 @@ class AliasTest extends PHPUnit_Framework_TestCase
         $this->assertNull($this->object->visitModel($model));
     }
 
-    public function testUpdateLayoutCollectionAppliedWithData()
-    {
-        $model = $this->getMockBuilder('\CTIMT\MyOrm\Model\Model')
-                ->disableOriginalConstructor()->setMethods(null)->getMock();
-
-        $entity = $this->getMockBuilder('\CTIMT\MyOrm\Entity\AbstractEntity')
-            ->getMock();
-        $entity->method('getName')->willReturn('test');
-
-        $model->setEntity($entity)->setData(['test' => [['test' => 'value1'], ['test' => 'value2']]]);
-        $this->assertTrue($this->object->update($model, ModelEvents::LAYOUT_COLLECTION_APPLIED));
-    }
-
-    public function testUpdateLayoutEntityApplied()
-    {
-        $model = $this->getMockBuilder('\CTIMT\MyOrm\Model\Model')
-                ->disableOriginalConstructor()->setMethods(null)->getMock();
-
-        $entity = $this->getMockBuilder('\CTIMT\MyOrm\Entity\AbstractEntity')
-            ->getMock();
-        $entity->method('getName')->willReturn('test');
-
-        $model->setEntity($entity)->setData(['test' => [['test' => 'value1'], ['test' => 'value2']]]);
-        $this->assertTrue($this->object->update($model, ModelEvents::LAYOUT_ENTITY_APPLIED));
-    }
-
     public function testUpdateValidate()
     {
         $model = $this->getMockBuilder('\CTIMT\MyOrm\Model\Model')
@@ -111,42 +85,7 @@ class AliasTest extends PHPUnit_Framework_TestCase
         $entity->method('getName')->willReturn('test');
 
         $model->setEntity($entity)->setData(['test' => [['test' => 'value1'], ['test' => 'value2']]]);
-        $this->assertTrue($this->object->update($model, ModelEvents::VALIDATE));
-    }
-
-    public function testUpdateLayoutCollectionAppliedNoData()
-    {
-        $model = $this->getMockBuilder('\CTIMT\MyOrm\Model\Model')
-                ->disableOriginalConstructor()->setMethods(null)->getMock();
-
-        $entity = $this->getMockBuilder('\CTIMT\MyOrm\Entity\AbstractEntity')
-            ->getMock();
-        $entity->method('getName')->willReturn('test');
-
-        $model->setEntity($entity)->setData(['test' => []]);
-        $this->assertTrue($this->object->update($model, ModelEvents::LAYOUT_COLLECTION_APPLIED));
-    }
-
-    public function testAddAliasToCollectionLayout()
-    {
-        $data = ["test" => [["newKey" => "value"]]];
-        $mapping = ['key' => 'newKey'];
-        $this->object->setMapping($mapping);
-        $result = $this->object->addAliasToCollectionLayout($data, 'test');
-        $this->assertArrayHasKey(LayoutKeys::META_KEY, $result);
-        $this->assertArrayHasKey(Alias::FIELD, $result[LayoutKeys::META_KEY]);
-        $this->assertEquals($mapping, $result[LayoutKeys::META_KEY][Alias::FIELD]);
-    }
-
-    public function testAddAliasToEntityLayout()
-    {
-        $data = ["newKey" => "value"];
-        $mapping = ['key' => 'newKey'];
-        $this->object->setMapping($mapping);
-        $result = $this->object->addAliasToEntityLayout($data);
-        $this->assertArrayHasKey(LayoutKeys::META_KEY, $result);
-        $this->assertArrayHasKey(Alias::FIELD, $result[LayoutKeys::META_KEY]);
-        $this->assertEquals($mapping, $result[LayoutKeys::META_KEY][Alias::FIELD]);
+        $this->assertTrue($this->object->setEventNames([ModelEvents::VALIDATE])->update($model, ModelEvents::VALIDATE));
     }
 
     public function testReverseAlias()

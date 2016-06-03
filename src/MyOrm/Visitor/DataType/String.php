@@ -1,18 +1,18 @@
 <?php namespace CTIMT\MyOrm\Visitor\DataType;
 
+use CTIMT\MyOrm\Adapter\AbstractAdapter;
 use CTIMT\MyOrm\Entity\HasStringFieldsInterface;
 use CTIMT\MyOrm\Enum\ModelEvents;
 use CTIMT\MyOrm\Exception\Http\InvalidDataTypeException;
 use CTIMT\MyOrm\Model\Model;
 use CTIMT\MyOrm\Model\ModelVisitorInterface;
-use CTIMT\MyOrm\Model\ObserverInterface;
 
 /**
  * Description of String
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class String implements ModelVisitorInterface, ObserverInterface
+class String extends AbstractAdapter implements ModelVisitorInterface
 {
 
     public function visitModel(Model $model)
@@ -22,11 +22,9 @@ class String implements ModelVisitorInterface, ObserverInterface
         }
     }
 
-    public function update(Model $model, $eventName)
+    protected function updateObserver(Model $model)
     {
-        if ($eventName == ModelEvents::VALIDATE) {
-            $this->validate($model);
-        }
+            $this->validate($model);        
     }
 
     private function validate(Model $model)
