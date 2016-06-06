@@ -29,87 +29,121 @@ class SortTest extends \PHPUnit_Framework_TestCase
         
     }
 
-    /**
-     * @covers CTIMT\MyOrm\Adapter\Sort::visitSelect
-     * @todo   Implement testVisitSelect().
-     */
-    public function testVisitSelect()
+    public function testSelect(){
+        $select = $this->getMockBuilder('CTIMT\MyOrm\Adapter\Select')
+            ->disableOriginalConstructor()->getMock();
+        $select->expects($this->once())
+            ->method('addSort');
+        $this->object
+            ->setAllowedFields(['test'])
+            ->setFields(['test'=>'asc'])
+            ->visitSelect($select);
+    }
+
+    public function testVisitModelSuccess()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $entity = $this->getMockBuilder('\CTIMT\MyOrm\Entity\IsSortableInterface')
+            ->getMock();
+        $entity->method('getSortFields')
+            ->willReturn(['TestA', 'TestB']);
+
+        $model = $this->getMockBuilder('\CTIMT\MyOrm\Model\Model')
+                ->disableOriginalConstructor()->getMock();
+        $model->expects($this->exactly(2))
+            ->method('getEntity')
+            ->willReturn($entity);
+        $this->object->visitModel($model);
+    }
+
+    public function testVisitModelIgnored()
+    {
+        $entity = $this->getMockBuilder('\CTIMT\MyOrm\Entity\AbstractEntity')
+            ->getMock();
+        $entity->method('getAllFields')
+            ->willReturn(['TestA', 'TestB']);
+
+        $model = $this->getMockBuilder('\CTIMT\MyOrm\Model\Model')
+                ->disableOriginalConstructor()->getMock();
+        $model->expects($this->once())
+            ->method('getEntity')
+            ->willReturn($entity);
+        $this->object->visitModel($model);
+    }
+
+    public function testParseUrl()
+    {
+        $this->assertEquals(['test' => 'asc'], $this->object->parseUrl('test'), 'basic single');
+        $this->assertEquals(['test' => 'desc'], $this->object->parseUrl('-test'), 'descending single');
+
+        $this->assertEquals(['test' => 'asc', 'test2' => 'asc'], $this->object->parseUrl('test,test2'), 'basic multiple');
+        $this->assertEquals(['test' => 'desc', 'test2' => 'asc'], $this->object->parseUrl('-test,test2'), 'descending double');
+    }
+
+    public function testUpdateWhenEventCalled()
+    {
+        $model = $this->getMockBuilder('\CTIMT\MyOrm\Model\Model')
+                ->disableOriginalConstructor()->getMock();
+        $model->expects($this->once())
+            ->method('setData');
+        $model->expects($this->once())
+            ->method('getData')->willReturn([]);
+        $eventName = 'test';
+        $this->object->setEventNames([$eventName])->update($model, $eventName);
+    }
+
+    public function testUpdateWhenEventNotCalled()
+    {
+        $model = $this->getMockBuilder('\CTIMT\MyOrm\Model\Model')
+                ->disableOriginalConstructor()->getMock();
+        $model->expects($this->never())
+            ->method('setData');
+        $model->expects($this->never())
+            ->method('getData')->willReturn([]);
+        $eventName = 'test';
+        $this->object->setEventNames([$eventName . 'Not'])->update($model, $eventName);
+    }
+
+    public function testBuildFormatForCollection()
+    {
+        $fields = ['test' => 'asc'];
+        $allowedFields = ['test'];
+        $final = [
+            \CTIMT\MyOrm\Enum\LayoutKeys::META_KEY => [
+                Sort::KEY => [
+                    Sort::SORT_ACTIVE => $fields,
+                    Sort::SORT_FIELDS => $allowedFields,
+                ]
+            ]
+        ];
+        $this->assertEquals($final, $this->object
+                ->setAllowedFields($allowedFields)
+                ->setFields($fields)
+                ->buildFormatForCollection([]));
+    }
+
+    public function testFieldsWithAllowedField()
+    {
+        $value = ['test' => 'asc', 'field' => 'asc'];
+        $this->assertEquals($value, $this->object->setAllowedFields(array_keys($value))->setFields($value)->getFields());
     }
 
     /**
-     * @covers CTIMT\MyOrm\Adapter\Sort::visitModel
-     * @todo   Implement testVisitModel().
+     * @expectedException CTIMT\MyOrm\Exception\Adapter\InvalidOrderKey
+     * @expectedExceptionMessage Order field:field is invalid. Valid fields are: test
      */
-    public function testVisitModel()
+    public function testFieldsWithOutAllowedField()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $fields = ['test'];
+        $value = ['test' => 'asc', 'field' => 'asc'];
+        $this->object
+            ->setAllowedFields($fields)
+            ->setFields($value)
+            ->getFields();
     }
 
-    /**
-     * @covers CTIMT\MyOrm\Adapter\Sort::update
-     * @todo   Implement testUpdate().
-     */
-    public function testUpdate()
+    public function testAllowedFields()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @covers CTIMT\MyOrm\Adapter\Sort::getField
-     * @todo   Implement testGetField().
-     */
-    public function testGetField()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @covers CTIMT\MyOrm\Adapter\Sort::setField
-     * @todo   Implement testSetField().
-     */
-    public function testSetField()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @covers CTIMT\MyOrm\Adapter\Sort::getAllowedFields
-     * @todo   Implement testGetAllowedFields().
-     */
-    public function testGetAllowedFields()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @covers CTIMT\MyOrm\Adapter\Sort::setAllowedFields
-     * @todo   Implement testSetAllowedFields().
-     */
-    public function testSetAllowedFields()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $value = ['test', 'field'];
+        $this->assertEquals($value, $this->object->setAllowedFields($value)->getAllowedFields());
     }
 }

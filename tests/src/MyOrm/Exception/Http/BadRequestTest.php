@@ -21,9 +21,15 @@ class BadRequestTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tears down the fixture, for example, closes a network connection.
-     * This method is called after a test is executed.
+     * @expectedException CTIMT\MyOrm\Exception\Http\BadRequest
+     * @expectedExceptionCode 400
+     * @expectedExceptionMessage someMessage
      */
+    public function testBadRequest()
+    {
+        throw new BadRequest('someMessage');
+    }
+    
     protected function tearDown()
     {
         

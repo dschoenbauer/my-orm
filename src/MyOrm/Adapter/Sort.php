@@ -24,14 +24,15 @@ class Sort extends AbstractAdapter implements SelectVisitorInterface, ModelVisit
 
     const KEY = 'sort';
     const SORT_FIELDS = "fields";
+    const SORT_ACTIVE = "active";
     const DIRECTION_CHARACTER = '-';
 
     private $_allowedFields = [];
-    private $_field;
+    private $_fields;
 
     public function visitSelect(Select $select)
     {
-        $fields = $this->getField();
+        $fields = $this->getFields();
         if (count($fields)) {
             foreach ($fields as $field => $direction) {
                 $select->addSort($field, $direction);
@@ -46,11 +47,11 @@ class Sort extends AbstractAdapter implements SelectVisitorInterface, ModelVisit
         }
         $sort = $model->getAttribute(ModelAttributes::SORT);
         $allowedFields = $model->getEntity()->getSortFields();
-        $this->setAllowedFields($allowedFields)->setField($this->parseUrl($sort)? : []);
+        $this->setAllowedFields($allowedFields)->setFields($this->parseUrl($sort)? : []);
         $model->attach($this);
     }
 
-    protected function parseUrl($string)
+    public function parseUrl($string)
     {
         $pieces = array_filter(explode(',', $string));
         $output = [];
@@ -62,44 +63,39 @@ class Sort extends AbstractAdapter implements SelectVisitorInterface, ModelVisit
 
     protected function updateObserver(Model $model)
     {
-        $this->buildFormatForCollection($model);
+        $model->setData($this->buildFormatForCollection($model->getData()));
     }
 
-    protected function buildFormatForCollection(Model $model)
+    public function buildFormatForCollection(array $data)
     {
-        $data = $model->getData();
-        $data[LayoutKeys::META_KEY][self::KEY]['active'] = $this->getField();
+        $data[LayoutKeys::META_KEY][self::KEY][self::SORT_ACTIVE] = $this->getFields();
         $data[LayoutKeys::META_KEY][self::KEY][self::SORT_FIELDS] = $this->getAllowedFields();
-        $model->setData($data);
+        return $data;
     }
 
-    public function getField()
+    public function getFields()
     {
-        return $this->_field;
+        return $this->_fields;
     }
 
-    public function setField(array $field)
+    public function setFields(array $field)
     {
         $invalidFields = array_keys(array_diff_key($field, array_flip($this->getAllowedFields())));
         if (count($field) > 0 && count($invalidFields)) {
             throw new InvalidOrderKey($invalidFields, $this->getAllowedFields());
         }
-        $this->_field = $field;
+        $this->_fields = $field;
         return $this;
     }
 
     public function getAllowedFields()
     {
-        return array_keys($this->_allowedFields);
+        return $this->_allowedFields;
     }
 
     public function setAllowedFields(array $allowedFields)
     {
-        $fields = [];
-        foreach ($allowedFields as $field => $value) {
-            $fields[(is_numeric($field) ? $value : $field)] = $value;
-        }
-        $this->_allowedFields = $fields;
+        $this->_allowedFields = $allowedFields;
         return $this;
     }
 }

@@ -17,7 +17,17 @@ class ForbiddenTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new Forbidden;
+    }
+    
+    /**
+     * 
+     * @expectedException CTIMT\MyOrm\Exception\Http\Forbidden
+     * @expectedExceptionCode 403
+     * @expectedExceptionMessage someMessage
+     */
+    public function testForbidden()
+    {
+        throw new Forbidden('someMessage');
     }
 
     /**

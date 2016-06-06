@@ -17,9 +17,18 @@ class NotFoundTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new NotFound;
     }
 
+    /**
+     * @expectedException \CTIMT\MyOrm\Exception\Http\NotFound
+     * @expectedExceptionCode 404
+     * @expectedExceptionMessage someMessage
+     */
+    public function testNotFound()
+    {
+        throw New NotFound('someMessage');
+    }
+    
     /**
      * Tears down the fixture, for example, closes a network connection.
      * This method is called after a test is executed.

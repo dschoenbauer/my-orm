@@ -17,7 +17,16 @@ class ConflictTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new Conflict;
+    }
+    
+    /**
+     * 
+     * @expectedException CTIMT\MyOrm\Exception\Http\Conflict
+     * @expectedExceptionCode 409
+     * @expectedExceptionMessage someMessage
+     */
+    public function testConflict(){
+        throw new Conflict('someMessage');
     }
 
     /**

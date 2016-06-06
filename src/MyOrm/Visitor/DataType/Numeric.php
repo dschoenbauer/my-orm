@@ -2,7 +2,6 @@
 
 use CTIMT\MyOrm\Adapter\AbstractAdapter;
 use CTIMT\MyOrm\Entity\HasNumericFieldsInterface;
-use CTIMT\MyOrm\Enum\ModelEvents;
 use CTIMT\MyOrm\Exception\Visitor\DataType\InvalidDataTypeException;
 use CTIMT\MyOrm\Model\Model;
 use CTIMT\MyOrm\Model\ModelVisitorInterface;
@@ -14,6 +13,7 @@ use CTIMT\MyOrm\Model\ModelVisitorInterface;
  */
 class Numeric extends AbstractAdapter implements ModelVisitorInterface
 {
+    const TYPE = 'number';
 
     public function visitModel(Model $model)
     {
@@ -24,17 +24,16 @@ class Numeric extends AbstractAdapter implements ModelVisitorInterface
 
     protected function updateObserver(Model $model)
     {
-        $this->validate($model);
+        $this->validate($model->getData(), $model->getEntity()->getNumericFields());
     }
 
-    public function validate(Model $model)
+    public function validate(array $data, array $fields)
     {
-        $numericFields = $model->getEntity()->getNumericFields();
-        $data = $model->getData();
-        foreach ($numericFields as $field) {
+        foreach ($fields as $field) {
             if (array_key_exists($field, $data) && !is_numeric($data[$field])) {
-                throw new InvalidDataTypeException($field, 'number');
+                throw new InvalidDataTypeException($field, self::TYPE);
             }
         }
+        return true;
     }
 }

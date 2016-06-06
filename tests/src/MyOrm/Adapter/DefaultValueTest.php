@@ -29,27 +29,44 @@ class DefaultValueTest extends \PHPUnit_Framework_TestCase
         
     }
 
-    /**
-     * @covers CTIMT\MyOrm\Adapter\DefaultValue::visitModel
-     * @todo   Implement testVisitModel().
-     */
     public function testVisitModel()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $entity = $this->getMockBuilder('\CTIMT\MyOrm\Entity\HasDefaultValuesInterface')->getMock();
+        $model = $this->getMockBuilder('\CTIMT\MyOrm\Model\Model')->disableOriginalConstructor()->getMock();
+        $model->expects($this->any())->method('getEntity')->willReturn($entity);
+        $model->expects($this->once())->method('attach');
+        $this->object->visitModel($model);
+    }
+    
+    public function testDefaultValueOverridden(){
+        $data = ['testField1'=>'actualValue','testField2'=>'actualValue'];
+        $defaultValues = ['testField1'=>'defaultValue'];
+        $expected = $data;
+        $this->assertEquals($expected, $this->object->getDefaultValue($data, $defaultValues));
+    }
+    
+    public function testDefaultValueMissingDefaultValue(){        
+        $data = ['testField1'=>'actualValue','testField2'=>'actualValue'];
+        $defaultValues = ['testField3'=>'defaultValue'];
+        $expected = [
+            'testField1'=>'actualValue',
+            'testField2'=>'actualValue',
+            'testField3'=>'defaultValue'];
+        $this->assertEquals($expected, $this->object->getDefaultValue($data, $defaultValues));
     }
 
-    /**
-     * @covers CTIMT\MyOrm\Adapter\DefaultValue::update
-     * @todo   Implement testUpdate().
-     */
     public function testUpdate()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $data = ['testField1'=>'actualValue','testField2'=>'actualValue'];
+        $defaultValues = ['testField1'=>'defaultValue'];
+        $entity = $this->getMockBuilder('\CTIMT\MyOrm\Entity\HasDefaultValuesInterface')->getMock();
+        $entity->expects($this->once())->method('getDefaultValues')->willReturn($defaultValues);
+            
+        $model = $this->getMockBuilder('\CTIMT\MyOrm\Model\Model')->disableOriginalConstructor()->getMock();
+        $model->expects($this->once())->method('getEntity')->willReturn($entity);
+        $model->expects($this->once())->method('getData')->willReturn($data);
+        $model->expects($this->once())->method('setData');
+        
+        $this->object->setEventNames(['test'])->update($model, 'test');
     }
 }

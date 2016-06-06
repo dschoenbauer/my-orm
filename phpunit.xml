@@ -3,6 +3,7 @@
          xsi:noNamespaceSchemaLocation="https://raw.github.com/sebastianbergmann/phpunit/master/phpunit.xsd"
          bootstrap="./tests/bootstrap.php"
          colors="true"
+         processUncoveredFilesFromWhitelist="true"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
@@ -19,9 +20,10 @@
     <filter>
         <whitelist>
             <directory suffix=".php">./src/</directory>
+            <exclude>
+                <directory suffix="Interface.php">.</directory>
+                <directory>./src/MyOrm/Enum</directory>
+            </exclude>
         </whitelist>
-        <exclude>
-            <directory suffix="Interface.php">.</directory>
-        </exclude>
     </filter>
 </phpunit>

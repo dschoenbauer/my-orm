@@ -21,6 +21,10 @@ class DefaultValue extends AbstractAdapter implements ModelVisitorInterface
 
     protected function updateObserver(Model $model)
     {
-        $model->setData(array_merge($model->getEntity()->getDefaultValues(), $model->getData()));
+        $model->setData($this->getDefaultValue($model->getEntity()->getDefaultValues(), $model->getData()));
+    }
+    
+    public function getDefaultValue(array $data,array $defaultValues){
+        return array_merge($defaultValues, $data);
     }
 }

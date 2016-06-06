@@ -2,7 +2,7 @@
 
 use CTIMT\MyOrm\Adapter\AbstractAdapter;
 use CTIMT\MyOrm\Entity\HasBoolFieldsInterface;
-use CTIMT\MyOrm\Enum\ModelEvents;
+use CTIMT\MyOrm\Exception\Visitor\DataType\InvalidDataTypeException;
 use CTIMT\MyOrm\Model\Model;
 use CTIMT\MyOrm\Model\ModelVisitorInterface;
 
@@ -13,6 +13,7 @@ use CTIMT\MyOrm\Model\ModelVisitorInterface;
  */
 class Boolean extends AbstractAdapter implements ModelVisitorInterface
 {
+    const TYPE = "boolean";
 
     public function visitModel(Model $model)
     {
@@ -23,18 +24,16 @@ class Boolean extends AbstractAdapter implements ModelVisitorInterface
 
     protected function updateObserver(Model $model)
     {
-        $this->validate($model);
+        $this->validate($model->getData(),$model->getEntity()->getBoolFields());
     }
 
-    protected function validate(Model $model)
+    public function validate(array $data, array $fields)
     {
-        $booleanFields = $model->getEntity()->getBoolFields();
-        $data = $model->getData();
-        foreach ($booleanFields as $field) {
+        foreach ($fields as $field) {
             if (array_key_exists($field, $data) && !is_bool($data[$field])) {
-                $data[$field] = boolval($data[$field]);
+                throw new InvalidDataTypeException($field, self::TYPE);
             }
         }
-        $model->setData($data);
+        return true;
     }
 }

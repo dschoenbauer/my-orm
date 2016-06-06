@@ -17,9 +17,17 @@ class InternalServerErrorTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new InternalServerError;
     }
 
+    /**
+     * @expectedExceptionCode 500
+     * @expectedExceptionMessage someMessage
+     * @expectedException CTIMT\MyOrm\Exception\Http\InternalServerError
+     */
+    public function testInternalServerError(){
+        throw new InternalServerError('someMessage');
+    }
+    
     /**
      * Tears down the fixture, for example, closes a network connection.
      * This method is called after a test is executed.

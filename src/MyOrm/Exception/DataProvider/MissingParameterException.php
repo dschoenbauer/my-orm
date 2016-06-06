@@ -9,7 +9,7 @@ use CTIMT\MyOrm\Exception\Platform\LogicException;
  *
  * @author David
  */
-class MissingParameter extends LogicException implements ExceptionInterface
+class MissingParameterException extends LogicException implements ExceptionInterface
 {
 
     public function __construct(array $parameters)

@@ -18,24 +18,24 @@ class Date extends AbstractAdapter implements ModelVisitorInterface
     public function visitModel(Model $model)
     {
         if ($model->getEntity() instanceof HasDateFieldsInterface) {
-            $model->accept($this);
+            $model->attach($this);
         }
     }
 
     protected function updateObserver(Model $model)
     {
-        $this->validate($model);
+        $this->validate($model->getData(), $model->getEntity()->getDateFields());
     }
 
-    private function validate(Model $model)
+    public function validate(array $data, array $fields)
     {
-        $dateFields = $model->getEntity()->getDateFields();
-        $data = $model->getData();
-        foreach ($dateFields as $field) {
+
+        foreach ($fields as $field) {
             if (array_key_exists($field, $data) && !$this->validateField($data[$field])) {
                 throw new InvalidDataTypeException($field, 'date');
             }
         }
+        return true;
     }
 
     private function validateField($value)

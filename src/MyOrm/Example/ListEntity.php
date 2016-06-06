@@ -1,6 +1,5 @@
 <?php namespace CTIMT\MyOrm\Example;
 
-use CTIMT\MyOrm\Adapter\Filter;
 use CTIMT\MyOrm\Entity\AbstractEntity;
 use CTIMT\MyOrm\Entity\HasBoolFieldsInterface;
 use CTIMT\MyOrm\Entity\HasFilterInterface;
@@ -8,7 +7,6 @@ use CTIMT\MyOrm\Entity\HasNumericFieldsInterface;
 use CTIMT\MyOrm\Entity\HasStringFieldsInterface;
 use CTIMT\MyOrm\Entity\IsSortableInterface;
 use CTIMT\MyOrm\Enum\SortKeys;
-use CTIMT\MyOrm\Enum\SearchTypeMapping;
 
 /**
  * Description of ListEntity

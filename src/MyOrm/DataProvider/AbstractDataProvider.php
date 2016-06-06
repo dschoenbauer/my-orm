@@ -1,6 +1,6 @@
 <?php namespace CTIMT\MyOrm\DataProvider;
 
-use CTIMT\MyOrm\Exception\DataProvider\MissingParameter;
+use CTIMT\MyOrm\Exception\DataProvider\MissingParameterException;
 use PDO;
 
 /**
@@ -98,14 +98,14 @@ abstract class AbstractDataProvider implements DataProviderInterface
      * @param type $field
      * @param type $parameters
      * @return boolean true for no errors
-     * @throws MissingParameter
+     * @throws MissingParameterException
      */
     protected function validateExistance($field, $parameters)
     {
         if (is_array($field) && count(array_intersect($field, array_keys($parameters))) == 0) {
-            throw new MissingParameter($field);
+            throw new MissingParameterException($field);
         } elseif (!is_array($field) && !array_key_exists($field, $parameters)) {
-            throw new MissingParameter($field);
+            throw new MissingParameterException($field);
         }
         return true;
     }

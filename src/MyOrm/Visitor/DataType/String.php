@@ -2,8 +2,7 @@
 
 use CTIMT\MyOrm\Adapter\AbstractAdapter;
 use CTIMT\MyOrm\Entity\HasStringFieldsInterface;
-use CTIMT\MyOrm\Enum\ModelEvents;
-use CTIMT\MyOrm\Exception\Http\InvalidDataTypeException;
+use CTIMT\MyOrm\Exception\Visitor\DataType\InvalidDataTypeException;
 use CTIMT\MyOrm\Model\Model;
 use CTIMT\MyOrm\Model\ModelVisitorInterface;
 
@@ -14,6 +13,7 @@ use CTIMT\MyOrm\Model\ModelVisitorInterface;
  */
 class String extends AbstractAdapter implements ModelVisitorInterface
 {
+    const TYPE = 'string';
 
     public function visitModel(Model $model)
     {
@@ -24,17 +24,16 @@ class String extends AbstractAdapter implements ModelVisitorInterface
 
     protected function updateObserver(Model $model)
     {
-            $this->validate($model);        
+        $this->validate($model->getData(), $model->getEntity()->getStringFields());
     }
 
-    private function validate(Model $model)
+    public function validate($data, array $fields)
     {
-        $stringFields = $model->getEntity()->getStringFields();
-        $data = $model->getData();
-        foreach ($stringFields as $field) {
+        foreach ($fields as $field) {
             if (array_key_exists($field, $data) && !is_string($data[$field])) {
-                throw new InvalidDataTypeException($field, 'string');
+                throw new InvalidDataTypeException($field, self::TYPE);
             }
         }
+        return true;
     }
 }
