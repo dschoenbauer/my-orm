@@ -3,6 +3,7 @@
 use CTIMT\MyOrm\Adapter\Query;
 use CTIMT\MyOrm\Entity\AbstractEntity;
 use CTIMT\MyOrm\Enum\ModelActions;
+use CTIMT\MyOrm\Enum\ModelEvents;
 use Exception;
 
 /*
@@ -36,12 +37,12 @@ class Model
     public function create($data)
     {
         try {
-            $this->setData($data);
-            $this->getQuery()->getAdapter()->beginTransaction();
-            $this->getActions()->run(ModelActions::CREATE);
-            $this->getQuery()->getAdapter()->commit();
+            $this->setData($data)
+                ->notify(ModelEvents::TRAMSACTION_START)
+                ->getActions()->run(ModelActions::CREATE);
+            $this->notify(ModelEvents::TRAMSACTION_COMPLETE);
         } catch (\Exception $exc) {
-            $this->getQuery()->getAdapter()->rollBack();
+            $this->notify(ModelEvents::ERROR);
             throw $exc;
         }
         return $this->fetch($this->getId());
@@ -63,11 +64,14 @@ class Model
     public function update($id, $data)
     {
         try {
-            $this->setId($id)->setData($data)->getQuery()->getAdapter()->beginTransaction();
-            $this->getActions()->run(ModelActions::UPDATE);
-            $this->getQuery()->getAdapter()->commit();
+            $this
+                ->setId($id)
+                ->setData($data)
+                ->notify(ModelEvents::TRAMSACTION_START)
+                ->getActions()->run(ModelActions::UPDATE);
+            $this->notify(ModelEvents::TRAMSACTION_COMPLETE);
         } catch (Exception $exc) {
-            $this->getQuery()->getAdapter()->rollBack();
+            $this->notify(ModelEvents::ERROR);
             throw $exc;
         }
         return $this->fetch($id);
@@ -76,11 +80,11 @@ class Model
     public function delete($id)
     {
         try {
-            $this->setId($id)->getQuery()->getAdapter()->beginTransaction();
+            $this->setId($id)->notify(ModelEvents::TRAMSACTION_START);
             $this->getActions()->run(ModelActions::DELETE);
-            $this->getQuery()->getAdapter()->commit();
+            $this->notify(ModelEvents::TRAMSACTION_COMPLETE);
         } catch (Exception $exc) {
-            $this->getQuery()->getAdapter()->rollBack();
+            $this->notify(ModelEvents::ERROR);
             throw $exc;
         }
         return true;

@@ -30,7 +30,6 @@ class Encoding implements ModelVisitorInterface
         mb_http_input($this->getEncodingProgram());
         mb_regex_encoding($this->getEncodingProgram());
 
-
         $model->getQuery()->getAdapter()->exec('SET NAMES ' . $this->getEncodingDb());
     }
 

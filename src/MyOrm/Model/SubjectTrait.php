@@ -35,5 +35,6 @@ trait SubjectTrait
         foreach ($this->_observers as $obs) {
             $obs->update($this, $event);
         }
+        return $this;
     }
 }

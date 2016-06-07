@@ -32,10 +32,6 @@ class ModelTest extends \PHPUnit_Framework_TestCase
         
     }
 
-    /**
-     * @covers CTIMT\MyOrm\Model\Model::create
-     * @todo   Implement testCreate().
-     */
     public function testCreate()
     {
         // Remove the following lines when you implement this test.
@@ -140,52 +136,15 @@ class ModelTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @covers CTIMT\MyOrm\Model\Model::getData
-     * @todo   Implement testGetData().
-     */
-    public function testGetData()
+    public function testData()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $data = ['test'];
+        $this->assertEquals($data, $this->object->setData($data)->getData());
     }
 
-    /**
-     * @covers CTIMT\MyOrm\Model\Model::setData
-     * @todo   Implement testSetData().
-     */
-    public function testSetData()
+    public function testId()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @covers CTIMT\MyOrm\Model\Model::getId
-     * @todo   Implement testGetId().
-     */
-    public function testGetId()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @covers CTIMT\MyOrm\Model\Model::setId
-     * @todo   Implement testSetId().
-     */
-    public function testSetId()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->assertEquals(1, $this->object->setId(1)->getId());
     }
 
     /**

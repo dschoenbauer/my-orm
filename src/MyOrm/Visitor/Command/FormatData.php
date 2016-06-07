@@ -1,16 +1,8 @@
 <?php namespace CTIMT\MyOrm\Visitor\Command;
 
-use CTIMT\MyOrm\Entity\HasBoolFieldsInterface;
-use CTIMT\MyOrm\Entity\HasDateFieldsInterface;
-use CTIMT\MyOrm\Entity\HasNumericFieldsInterface;
-use CTIMT\MyOrm\Enum\Defaults;
-use CTIMT\MyOrm\Enum\Formats;
-use CTIMT\MyOrm\Enum\ModelAttributes;
 use CTIMT\MyOrm\Model\Model;
 use CTIMT\MyOrm\Model\ModelVisitorInterface;
 use CTIMT\MyOrm\Visitor\Command\Format\FormatInterface;
-use DateTime;
-use DateTimeZone;
 
 /**
  * Description of FormatData
@@ -43,11 +35,6 @@ class FormatData implements ModelVisitorInterface
                     $value = $format->format($value);
                     return;
                 }
-            }
-            if ($entity instanceof HasDateFieldsInterface &&
-                in_array($key, $entity->getDateFields()) &&
-                $value) {
-                
             }
         });
         return $data;

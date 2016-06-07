@@ -5,6 +5,7 @@ use CTIMT\MyOrm\Adapter\AliasCollectionView;
 use CTIMT\MyOrm\Adapter\AliasEntityView;
 use CTIMT\MyOrm\Adapter\ClearId;
 use CTIMT\MyOrm\Adapter\DefaultValue;
+use CTIMT\MyOrm\Adapter\ErrorHandlerException;
 use CTIMT\MyOrm\Adapter\Fields;
 use CTIMT\MyOrm\Adapter\Filter;
 use CTIMT\MyOrm\Adapter\Pagination;
@@ -13,6 +14,9 @@ use CTIMT\MyOrm\Adapter\Required;
 use CTIMT\MyOrm\Adapter\Select;
 use CTIMT\MyOrm\Adapter\Sort;
 use CTIMT\MyOrm\Adapter\StaticValue;
+use CTIMT\MyOrm\Adapter\TransactionBegin;
+use CTIMT\MyOrm\Adapter\TransactionCommit;
+use CTIMT\MyOrm\Adapter\TransactionRollBack;
 use CTIMT\MyOrm\Entity\EntityInterface;
 use CTIMT\MyOrm\Enum\ModelActions;
 use CTIMT\MyOrm\Enum\ModelEvents;
@@ -35,7 +39,6 @@ use CTIMT\MyOrm\Visitor\Setup\Encoding;
 use CTIMT\MyOrm\Visitor\Setup\TimeZone;
 use CTIMT\MyOrm\Visitor\Setup\TimeZoneDb;
 use CTIMT\MyOrm\Visitor\Setup\UserInput;
-use PDO;
 
 /**
  * Description of ModelBuilder
@@ -55,8 +58,12 @@ class StandardModelBuilder implements ModelBuilderInterface
 
     public function setup($timeZone = null, $encodingProgram = 'UTF8', $encodingDb = 'utf8mb4')
     {
-        $this->getModel()->getQuery()->getAdapter()->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        
         $this->getModel()
+            ->accept(new ErrorHandlerException())
+            ->accept(new TransactionBegin([ModelEvents::TRAMSACTION_START]))
+            ->accept(new TransactionCommit([ModelEvents::TRAMSACTION_COMPLETE]))
+            ->accept(new TransactionRollBack([ModelEvents::ERROR]))
             ->accept(new TimeZone($timeZone))
             ->accept(new TimeZoneDb())
             ->accept(new Encoding($encodingProgram, $encodingDb))
