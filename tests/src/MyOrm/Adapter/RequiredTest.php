@@ -29,27 +29,71 @@ class RequiredTest extends \PHPUnit_Framework_TestCase
         
     }
 
-    /**
-     * @covers CTIMT\MyOrm\Adapter\Required::visitModel
-     * @todo   Implement testVisitModel().
-     */
-    public function testVisitModel()
+ public function testVisitModel()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        
+        $entity = $this->getMockBuilder('\CTIMT\MyOrm\Entity\HasRequiredFieldsInterface')->getMock();
+        $model = $this->getMockBuilder('\CTIMT\MyOrm\Model\Model')->disableOriginalConstructor()->getMock();
+        $model->expects($this->once())->method('getEntity')->willReturn($entity);
+        $model->expects($this->once())->method('attach');
+        $this->object->visitModel($model);
+    }
+    
+    public function testVisitModelInCorrectType()
+    {
+        
+        $model = $this->getMockBuilder('\CTIMT\MyOrm\Model\Model')->disableOriginalConstructor()->getMock();       
+        $model->expects($this->never())->method('attach');
+        $this->object->visitModel($model);
     }
 
-    /**
-     * @covers CTIMT\MyOrm\Adapter\Required::update
-     * @todo   Implement testUpdate().
-     */
-    public function testUpdate()
+
+    public function testValidateSuccess()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $data  = [
+            'number'=>1,
+            'text'=>'someText',
+            'boolean'=> true,
+        ];
+        $fields = ['number'];
+        $this->assertTrue($this->object->validate(array_keys($data), $fields));
+    }
+    
+    /**
+     * @expectedException CTIMT\MyOrm\Exception\Adapter\MissingPayloadKeyException
+     * @expectedExceptionCode 422
+     * @expectedExceptionMessage Field:notPresent is missing. Required fields are: number,notPresent
+     */
+    
+    public function testValidateFailure()
+    {
+        $data  = [
+            'number'=>1,
+            'text'=>'someText',
+            'boolean'=> true,
+        ];
+        $fields = ['number','notPresent'];
+        $this->assertTrue($this->object->validate(array_keys($data), $fields));
+    }
+    
+    public function testUpdateSuccess()
+    {
+        $entity = $this->getMockBuilder('\CTIMT\MyOrm\Entity\HasRequiredFieldsInterface')->getMock();
+        $entity->expects($this->once())->method('getRequiredFields')->willReturn([]);
+        $model = $this->getMockBuilder('\CTIMT\MyOrm\Model\Model')->disableOriginalConstructor()->getMock();
+        $model->expects($this->once())->method('getEntity')->willReturn($entity);
+        $model->expects($this->once())->method('getData')->willReturn([]);
+        
+        $this->object->setEventNames(['test'])->update($model, 'test');
+    }
+    
+    public function testUpdateInvalidEventName()
+    {
+        $entity = $this->getMockBuilder('\CTIMT\MyOrm\Entity\HasRequiredFieldsInterface')->getMock();
+        $entity->expects($this->never())->method('getRequiredFields')->willReturn([]);
+        $model = $this->getMockBuilder('\CTIMT\MyOrm\Model\Model')->disableOriginalConstructor()->getMock();
+        $model->expects($this->never())->method('getEntity')->willReturn($entity);
+        $model->expects($this->never())->method('getData')->willReturn([]);
+        $this->object->setEventNames(['testNotMe'])->update($model, 'test');
     }
 }

@@ -22,14 +22,15 @@ class Required extends AbstractAdapter implements ModelVisitorInterface
 
     protected function updateObserver(Model $model)
     {
-        $this->validateFields($model->getEntity()->getRequiredFields(), array_keys($model->getData()));
+        $this->validate(array_keys($model->getData()), $model->getEntity()->getRequiredFields() );
     }
 
-    protected function validateFields(array $requiredFields, array $currentFields)
+    public function validate(array $currentFields, array $requiredFields)
     {
         $missingFields = array_diff($requiredFields, $currentFields);
         if (count($missingFields)) {
             throw new MissingPayloadKeyException($missingFields, $requiredFields);
         }
+        return true;
     }
 }

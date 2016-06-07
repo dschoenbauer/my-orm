@@ -18,7 +18,7 @@ echo json_encode($model->update(1238,
     [
         'country_id'=>'1238',
         'country_name' => 'Albania' . rand(0, 100),
-        'country_requireState' => 0,
+        'country_requireState' => false,
         'country_abbrev2'=>'Bo',
         'country_abbrev3'=>'Bon'
     ]));

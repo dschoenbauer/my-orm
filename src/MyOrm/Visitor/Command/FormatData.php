@@ -8,6 +8,7 @@ use CTIMT\MyOrm\Enum\Formats;
 use CTIMT\MyOrm\Enum\ModelAttributes;
 use CTIMT\MyOrm\Model\Model;
 use CTIMT\MyOrm\Model\ModelVisitorInterface;
+use CTIMT\MyOrm\Visitor\Command\Format\FormatInterface;
 use DateTime;
 use DateTimeZone;
 
@@ -19,38 +20,36 @@ use DateTimeZone;
 class FormatData implements ModelVisitorInterface
 {
 
+    private $formats = [];
+
     public function visitModel(Model $model)
     {
-        $data = $model->getData();
-        array_walk_recursive($data, function (&$value, $key) use ($model) {
-            if ($model->getEntity() instanceof HasBoolFieldsInterface &&
-                in_array($key, $model->getEntity()->getBoolFields())) {
-                $value = boolval($value);
-                return;
-            }
-            if ($value == '' || $value === null || $value === 'null') {
-                $value = null;
-                return;
-            }
-            if ($model->getEntity() instanceof HasNumericFieldsInterface &&
-                in_array($key, $model->getEntity()->getNumericFields())) {
-                $value = (int) $value;
-                return;
-            }
-            if ($model->getEntity() instanceof HasDateFieldsInterface &&
-                in_array($key, $model->getEntity()->getDateFields()) &&
-                $value) {
-                $timeZone = $model->getAttribute(ModelAttributes::TIME_ZONE, Defaults::TIME_ZONE);
-                if ($value instanceof DateTime) {
-                    $value = new DateTime($value->format(Formats::MYSQL_DATE_TIME), new DateTimeZone($timeZone));
-                } else {
-                    $value = new DateTime($value, new DateTimeZone($timeZone));
+        $model->setData($this->formatData($model->getData(), $model->getEntity()));
+    }
+
+    public function add(FormatInterface $format)
+    {
+        $this->formats[] = $format;
+        return $this;
+    }
+
+    public function formatData(array $data, $entity)
+    {
+        $formats = $this->formats;
+        array_walk_recursive($data, function (&$value, $key) use ($entity, $formats) {
+            foreach($formats as $format){
+            /* @var $format FormatInterface */
+                if($format->isRelevent($entity, $key, $value)){
+                    $value = $format->format($value);
+                    return;
                 }
-                $value->offset = $value->format('P');
-                $value->timezone_code = $value->format('T');
-                return;
+            }
+            if ($entity instanceof HasDateFieldsInterface &&
+                in_array($key, $entity->getDateFields()) &&
+                $value) {
+                
             }
         });
-        $model->setData($data);
+        return $data;
     }
 }

@@ -7,7 +7,6 @@
 namespace CTIMT\MyOrm\Model;
 
 use CTIMT\MyOrm\Enum\ModelAttributes;
-use LogicException;
 
 /**
  * Description of ActionCollection
@@ -58,7 +57,7 @@ class ActionCollection
         }
     }
 
-    private function extractQueue($queueName)
+    public function extractQueue($queueName)
     {
         if (!array_key_exists($queueName, $this->_actions)) {
             return [];
@@ -68,9 +67,7 @@ class ActionCollection
             $sort1[$key] = $row[self::PRIORITY];
             $sort2[$key] = $row[self::INSERTED];
         }
-        if (!array_multisort($sort1, SORT_ASC, $sort2, SORT_ASC, $queue)) {
-            return new LogicException('Error in sort:' . __CLASS__);
-        }
+        array_multisort($sort1, SORT_ASC, $sort2, SORT_ASC, $queue);
         return array_column($queue, self::DATA);
     }
 

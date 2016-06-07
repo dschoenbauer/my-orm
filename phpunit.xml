@@ -23,6 +23,8 @@
             <exclude>
                 <directory suffix="Interface.php">.</directory>
                 <directory>./src/MyOrm/Enum</directory>
+                <directory>./src/MyOrm/Example</directory>
+                <directory>./src/MyOrm/Exception</directory>
             </exclude>
         </whitelist>
     </filter>

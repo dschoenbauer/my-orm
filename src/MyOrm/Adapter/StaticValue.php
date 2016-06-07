@@ -19,13 +19,13 @@ class StaticValue extends AbstractAdapter implements ModelVisitorInterface
         }
     }
 
-    public function applyStaticValues(array $data, array $staticData)
-    {
-        return array_merge($data, $staticData);
-    }
-
     protected function updateObserver(Model $model)
     {
         $model->setData($this->applyStaticValues($model->getData(), $model->getEntity()->getStaticValues()));
+    }
+
+    public function applyStaticValues(array $data, array $staticData)
+    {
+        return array_merge($data, $staticData);
     }
 }
