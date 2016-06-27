@@ -5,27 +5,13 @@
  */
 class DomainExceptionTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
-     * @var DomainException
+     * @expectedException DomainException
+     * @expectedExceptionMessage someMessage
      */
-    protected $object;
-
-    /**
-     * Sets up the fixture, for example, opens a network connection.
-     * This method is called before a test is executed.
-     */
-    protected function setUp()
+    public function testDomainException()
     {
-        $this->object = new DomainException;
+        throw New DomainException('someMessage');
     }
 
-    /**
-     * Tears down the fixture, for example, closes a network connection.
-     * This method is called after a test is executed.
-     */
-    protected function tearDown()
-    {
-        
-    }
 }

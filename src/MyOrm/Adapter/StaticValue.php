@@ -9,7 +9,7 @@ use CTIMT\MyOrm\Model\ModelVisitorInterface;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class StaticValue extends AbstractAdapter implements ModelVisitorInterface
+class StaticValue extends AbstractModelObserver implements ModelVisitorInterface
 {
 
     public function visitModel(Model $model)

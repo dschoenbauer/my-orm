@@ -8,7 +8,7 @@ use CTIMT\MyOrm\Model\ModelVisitorInterface;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class TransactionBegin extends AbstractAdapter implements ModelVisitorInterface
+class TransactionBegin extends AbstractModelObserver implements ModelVisitorInterface
 {
     public function visitModel(Model $model)
     {

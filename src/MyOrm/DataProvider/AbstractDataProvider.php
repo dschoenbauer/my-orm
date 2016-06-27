@@ -46,7 +46,7 @@ abstract class AbstractDataProvider implements DataProviderInterface
     }
 
     /**
-     * 
+     *
      * @return PDO
      */
     function getPdo()

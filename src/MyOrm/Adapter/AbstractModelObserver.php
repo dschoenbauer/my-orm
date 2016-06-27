@@ -8,7 +8,7 @@ use CTIMT\MyOrm\Model\ObserverInterface;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-abstract class AbstractAdapter implements ObserverInterface
+abstract class AbstractModelObserver implements ObserverInterface
 {
 
     private $_eventNames = [];

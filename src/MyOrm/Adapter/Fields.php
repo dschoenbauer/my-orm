@@ -11,7 +11,7 @@ use CTIMT\MyOrm\Model\ModelVisitorInterface;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class Fields extends AbstractAdapter implements ModelVisitorInterface, SelectVisitorInterface
+class Fields extends AbstractModelObserver implements ModelVisitorInterface, SelectVisitorInterface
 {
 
     const FIELDS_HIDDEN = "hidden";

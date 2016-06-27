@@ -5,27 +5,12 @@
  */
 class BadFunctionCallExceptionTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
-     * @var BadFunctionCallException
+     * @expectedException BadFunctionCallException
+     * @expectedExceptionMessage someMessage
      */
-    protected $object;
-
-    /**
-     * Sets up the fixture, for example, opens a network connection.
-     * This method is called before a test is executed.
-     */
-    protected function setUp()
+    public function testBadFunctionCallException()
     {
-        $this->object = new BadFunctionCallException;
-    }
-
-    /**
-     * Tears down the fixture, for example, closes a network connection.
-     * This method is called after a test is executed.
-     */
-    protected function tearDown()
-    {
-        
+        throw New BadFunctionCallException('someMessage');
     }
 }

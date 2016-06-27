@@ -1,10 +1,4 @@
-<?php
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-namespace CTIMT\MyOrm\Adapter;
+<?php namespace CTIMT\MyOrm\Adapter;
 
 use CTIMT\MyOrm\Enum\ModelAttributes;
 use CTIMT\MyOrm\Exception\Adapter\InvalidAliasKeyException;
@@ -16,7 +10,7 @@ use CTIMT\MyOrm\Model\ModelVisitorInterface;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class Alias extends AbstractAdapter implements ModelVisitorInterface
+class Alias extends AbstractModelObserver implements ModelVisitorInterface
 {
 
     const FIELD = "alias";

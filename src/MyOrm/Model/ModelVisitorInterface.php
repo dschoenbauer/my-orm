@@ -6,6 +6,5 @@
  */
 interface ModelVisitorInterface
 {
-
     public function visitModel(Model $model);
 }

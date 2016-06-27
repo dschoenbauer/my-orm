@@ -10,7 +10,8 @@ use PDO;
 interface ModelBuilderInterface
 {
     public function createModel(EntityInterface $entity, PDO $pdo);
-    public function setup($timeZone = null, $encodingProgram = 'UTF8', $encodingDb = 'utf8mb4');
+    public function setup($timeZone = null, $encoding = 'UTF8');
+    public function prepareDataConnection($encoding = 'utf8mb4');
     public function addDataTypeValidations();
     public function addPersistanceActions();
     public function getModel();

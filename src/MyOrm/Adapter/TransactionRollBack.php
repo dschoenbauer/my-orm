@@ -8,7 +8,7 @@ use CTIMT\MyOrm\Model\ModelVisitorInterface;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class TransactionRollBack extends AbstractAdapter implements ModelVisitorInterface
+class TransactionRollBack extends AbstractModelObserver implements ModelVisitorInterface
 {
     public function visitModel(Model $model)
     {

@@ -1,33 +1,37 @@
 <?php namespace CTIMT\MyOrm\Visitor\Setup;
 
+use CTIMT\MyOrm\Connection\ConnectionVisitorInterface;
 use CTIMT\MyOrm\Model\Model;
 use CTIMT\MyOrm\Model\ModelVisitorInterface;
+use PDO;
 
 /**
- * Description of Utf8
+ * Description of EndcodingDb
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class Encoding implements ModelVisitorInterface
+class EncodingDb implements ModelVisitorInterface, ConnectionVisitorInterface
 {
 
     private $encoding;
 
-    public function __construct($encoding = 'UTF8')
+    public function __construct($encoding = 'utf8mb4')
     {
         $this->setEncoding($encoding);
     }
 
     public function visitModel(Model $model)
     {
-        mb_internal_encoding($this->getEncoding());
-        ini_set("default_charset", $this->getEncoding());
-        iconv_set_encoding("output_encoding", $this->getEncoding());
-        iconv_set_encoding("internal_encoding", $this->getEncoding());
-
-        mb_http_output($this->getEncoding());
-        mb_http_input($this->getEncoding());
-        mb_regex_encoding($this->getEncoding());
+        $this->applyEncoding($model->getQuery()->getAdapter());
+    }
+    
+    public function visitConnection(PDO $pdo)
+    {
+        $this->applyEncoding($pdo);
+    }
+    
+    protected function applyEncoding(PDO $pdo){
+        $pdo->exec('SET NAMES ' . $this->getEncoding());
     }
 
     public function getEncoding()
@@ -40,4 +44,5 @@ class Encoding implements ModelVisitorInterface
         $this->encoding = $encoding;
         return $this;
     }
+
 }

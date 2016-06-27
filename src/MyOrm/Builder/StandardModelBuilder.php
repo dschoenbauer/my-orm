@@ -5,7 +5,6 @@ use CTIMT\MyOrm\Adapter\AliasCollectionView;
 use CTIMT\MyOrm\Adapter\AliasEntityView;
 use CTIMT\MyOrm\Adapter\ClearId;
 use CTIMT\MyOrm\Adapter\DefaultValue;
-use CTIMT\MyOrm\Adapter\ErrorHandlerException;
 use CTIMT\MyOrm\Adapter\Fields;
 use CTIMT\MyOrm\Adapter\Filter;
 use CTIMT\MyOrm\Adapter\Pagination;
@@ -22,6 +21,7 @@ use CTIMT\MyOrm\Enum\ModelActions;
 use CTIMT\MyOrm\Enum\ModelEvents;
 use CTIMT\MyOrm\Enum\ModelExecutionPriority;
 use CTIMT\MyOrm\Model\Model;
+use CTIMT\MyOrm\Visitor\Command\UserInput;
 use CTIMT\MyOrm\Visitor\Command\ValidateData;
 use CTIMT\MyOrm\Visitor\Command\ValidFieldsFilter;
 use CTIMT\MyOrm\Visitor\Content\Create;
@@ -37,8 +37,7 @@ use CTIMT\MyOrm\Visitor\Layout\Collection;
 use CTIMT\MyOrm\Visitor\Layout\Entity;
 use CTIMT\MyOrm\Visitor\Setup\Encoding;
 use CTIMT\MyOrm\Visitor\Setup\TimeZone;
-use CTIMT\MyOrm\Visitor\Setup\TimeZoneDb;
-use CTIMT\MyOrm\Visitor\Setup\UserInput;
+use PDO;
 
 /**
  * Description of ModelBuilder
@@ -50,25 +49,28 @@ class StandardModelBuilder implements ModelBuilderInterface
 
     private $model;
 
-    public function createModel(EntityInterface $entity, \PDO $pdo)
+    public function createModel(EntityInterface $entity, PDO $pdo)
     {
         $this->model = new Model($entity, new Query($pdo));
         return $this;
     }
 
-    public function setup($timeZone = null, $encodingProgram = 'UTF8', $encodingDb = 'utf8mb4')
+    public function setup($timeZone = null, $encoding = 'UTF8')
     {
-        
         $this->getModel()
-            ->accept(new ErrorHandlerException())
+            ->accept(new TimeZone($timeZone))
+            ->accept(new Encoding($encoding))
+            ->accept(new UserInput());
+        return $this;
+    }
+
+    public function prepareDataConnection($encoding = 'utf8mb4')
+    {
+        $this->getModel()
             ->accept(new TransactionBegin([ModelEvents::TRAMSACTION_START]))
             ->accept(new TransactionCommit([ModelEvents::TRAMSACTION_COMPLETE]))
             ->accept(new TransactionRollBack([ModelEvents::ERROR]))
-            ->accept(new TimeZone($timeZone))
-            ->accept(new TimeZoneDb())
-            ->accept(new Encoding($encodingProgram, $encodingDb))
-            ->accept(new UserInput());
-        return $this;
+        ;
     }
 
     public function addDataTypeValidations()
@@ -112,7 +114,7 @@ class StandardModelBuilder implements ModelBuilderInterface
                 new AliasEntityView([ModelEvents::LAYOUT_ENTITY_APPLIED]),
                 ]), ModelExecutionPriority::ACTION)
             ->add(ModelActions::FETCH_ALL, new FetchAllFull(new Select(), [
-                new Fields(),
+                new Fields([ModelEvents::LAYOUT_COLLECTION_APPLIED]),
                 new Sort([ModelEvents::LAYOUT_COLLECTION_APPLIED]),
                 new Filter([ModelEvents::LAYOUT_COLLECTION_APPLIED]),
                 new Pagination(),

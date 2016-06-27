@@ -5,27 +5,13 @@
  */
 class UnavailableForLegalReasonsTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
-     * @var UnavailableForLegalReasons
+     * @expectedException \CTIMT\MyOrm\Exception\Http\UnavailableForLegalReasons
+     * @expectedExceptionCode 451
+     * @expectedExceptionMessage someMessage
      */
-    protected $object;
-
-    /**
-     * Sets up the fixture, for example, opens a network connection.
-     * This method is called before a test is executed.
-     */
-    protected function setUp()
+    public function testUnavailableForLegalReasons()
     {
-        $this->object = new UnavailableForLegalReasons;
-    }
-
-    /**
-     * Tears down the fixture, for example, closes a network connection.
-     * This method is called after a test is executed.
-     */
-    protected function tearDown()
-    {
-        
+        throw New UnavailableForLegalReasons('someMessage');
     }
 }

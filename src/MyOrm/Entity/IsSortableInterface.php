@@ -9,7 +9,4 @@ interface IsSortableInterface
 
     public function getSortFields();
 
-    public function getDefaultSortField();
-
-    public function getDefaultSortDirection();
 }

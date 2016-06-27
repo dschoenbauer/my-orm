@@ -10,7 +10,7 @@ use CTIMT\MyOrm\Model\ObserverInterface;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class ClearId extends AbstractAdapter implements ModelVisitorInterface, ObserverInterface
+class ClearId extends AbstractModelObserver implements ModelVisitorInterface, ObserverInterface
 {
 
     public function visitModel(Model $model)

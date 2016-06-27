@@ -1,6 +1,6 @@
 <?php namespace CTIMT\MyOrm\Visitor\DataType;
 
-use CTIMT\MyOrm\Adapter\AbstractAdapter;
+use CTIMT\MyOrm\Adapter\AbstractModelObserver;
 use CTIMT\MyOrm\Entity\HasStringFieldsInterface;
 use CTIMT\MyOrm\Exception\Visitor\DataType\InvalidDataTypeException;
 use CTIMT\MyOrm\Model\Model;
@@ -11,7 +11,7 @@ use CTIMT\MyOrm\Model\ModelVisitorInterface;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class String extends AbstractAdapter implements ModelVisitorInterface
+class String extends AbstractModelObserver implements ModelVisitorInterface
 {
     const TYPE = 'string';
 

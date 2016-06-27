@@ -27,12 +27,13 @@ class Collection implements ModelVisitorInterface
     public function visitModel(Model $model)
     {
         $format = new FormatData();
-        $format->add(new Boolean())
+        $format
+            ->add(new Boolean())
             ->add(New Null)
             ->add(new Number())
             ->add(new String())
             ->add(new Date($model));
-        
+
         $model->getActions()
             ->add(ModelActions::FETCH_ALL, $format, ModelExecutionPriority::AFTER_ACTION)
             ->add(ModelActions::FETCH_ALL, new RemoveKeys(), ModelExecutionPriority::AFTER_ACTION)

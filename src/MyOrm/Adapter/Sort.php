@@ -19,7 +19,7 @@ use CTIMT\MyOrm\Model\ModelVisitorInterface;
  *
  * @author David
  */
-class Sort extends AbstractAdapter implements SelectVisitorInterface, ModelVisitorInterface
+class Sort extends AbstractModelObserver implements SelectVisitorInterface, ModelVisitorInterface
 {
 
     const KEY = 'sort';

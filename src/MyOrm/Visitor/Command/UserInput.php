@@ -1,4 +1,4 @@
-<?php namespace CTIMT\MyOrm\Visitor\Setup;
+<?php namespace CTIMT\MyOrm\Visitor\Command;
 
 use CTIMT\MyOrm\Enum\ModelAttributes;
 use CTIMT\MyOrm\Enum\UserInterface;

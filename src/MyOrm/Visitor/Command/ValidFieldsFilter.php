@@ -1,6 +1,6 @@
 <?php namespace CTIMT\MyOrm\Visitor\Command;
 
-use CTIMT\MyOrm\Adapter\AbstractAdapter;
+use CTIMT\MyOrm\Adapter\AbstractModelObserver;
 use CTIMT\MyOrm\Exception\Visitor\Command\NoValidFieldsException;
 use CTIMT\MyOrm\Model\Model;
 use CTIMT\MyOrm\Model\ModelVisitorInterface;
@@ -10,7 +10,7 @@ use CTIMT\MyOrm\Model\ModelVisitorInterface;
  *
  * @author David
  */
-class ValidFieldsFilter extends AbstractAdapter implements ModelVisitorInterface
+class ValidFieldsFilter extends AbstractModelObserver implements ModelVisitorInterface
 {
 
     public function visitModel(Model $model)

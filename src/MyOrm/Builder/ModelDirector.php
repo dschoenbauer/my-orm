@@ -20,7 +20,8 @@ class ModelDirector
 
     public function buildModel(EntityInterface $entity, PDO $pdo, $timeZone = null, $encodingProgram = 'UTF8', $encodingDb = 'utf8mb4')
     {
-        return $this->getBuilder()->createModel($entity, $pdo)
+        return $this->getBuilder()
+                ->createModel($entity, $pdo)
                 ->setup($timeZone, $encodingProgram, $encodingDb)
                 ->addDataTypeValidations()
                 ->addPersistanceActions();

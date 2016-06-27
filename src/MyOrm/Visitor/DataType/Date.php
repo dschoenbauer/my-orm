@@ -1,6 +1,6 @@
 <?php namespace CTIMT\MyOrm\Visitor\DataType;
 
-use CTIMT\MyOrm\Adapter\AbstractAdapter;
+use CTIMT\MyOrm\Adapter\AbstractModelObserver;
 use CTIMT\MyOrm\Entity\HasDateFieldsInterface;
 use CTIMT\MyOrm\Exception\Visitor\DataType\InvalidDataTypeException;
 use CTIMT\MyOrm\Model\Model;
@@ -12,7 +12,7 @@ use DateTime;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class Date extends AbstractAdapter implements ModelVisitorInterface
+class Date extends AbstractModelObserver implements ModelVisitorInterface
 {
 
     public function visitModel(Model $model)

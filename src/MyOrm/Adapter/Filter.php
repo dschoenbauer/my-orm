@@ -18,7 +18,7 @@ use CTIMT\MyOrm\Model\ModelVisitorInterface;
  *
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
-class Filter extends AbstractAdapter implements ModelVisitorInterface, SelectVisitorInterface
+class Filter extends AbstractModelObserver implements ModelVisitorInterface, SelectVisitorInterface
 {
 
     const FIELD = 'filter';
@@ -28,7 +28,7 @@ class Filter extends AbstractAdapter implements ModelVisitorInterface, SelectVis
 
     protected function updateObserver(Model $model)
     {
-        $this->addFilterToLayout($model);
+        $model->setData($this->addFilterToLayout($model->getData()));
     }
 
     public function visitModel(Model $model)
@@ -47,12 +47,11 @@ class Filter extends AbstractAdapter implements ModelVisitorInterface, SelectVis
         }
     }
 
-    public function addFilterToLayout(Model $model)
+    public function addFilterToLayout(array $data)
     {
-        $data = $model->getData();
         $data[LayoutKeys::META_KEY][self::FIELD]['active'] = $this->getSearchKeyValue();
         $data[LayoutKeys::META_KEY][self::FIELD]['fields'] = $this->getValidFields();
-        $model->setData($data);
+        return $data;
     }
 
     public function getSearchKeyValue()
@@ -60,7 +59,7 @@ class Filter extends AbstractAdapter implements ModelVisitorInterface, SelectVis
         return $this->_searchKeyValue;
     }
 
-    public function setSearchKeyValue($searchKeyValue)
+    public function setSearchKeyValue(array $searchKeyValue)
     {
         $this->_searchKeyValue = $searchKeyValue;
         return $this;
@@ -71,7 +70,7 @@ class Filter extends AbstractAdapter implements ModelVisitorInterface, SelectVis
         return $this->_validFields;
     }
 
-    public function setValidFields($validFields)
+    public function setValidFields(array $validFields)
     {
         $this->_validFields = $validFields;
         return $this;
