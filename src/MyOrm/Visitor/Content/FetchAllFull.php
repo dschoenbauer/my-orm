@@ -34,7 +34,7 @@ class FetchAllFull implements ModelVisitorInterface
             ->addFrom($model->getEntity()->getTable());
         $this->applyVisitors($model, $this->getSelect(), $this->getVisitors());
         $this->runTemplate($model);
-        $this->getSelect()->setFields(array_merge([$model->getEntity()->getIdField() . ' ' . Settings::ROW_ID], $this->getSelect()->getFields()));
+        $this->getSelect()->setFields(array_merge([$model->getEntity()->getIdField() . ' as ' . Settings::ROW_ID], $this->getSelect()->getFields()));
         $stmt = $model->getQuery()->getAdapter()->prepare($this->getSelect()->getSql());
         if ($this->getSelect()->getWhere() && $this->getSelect()->getWhere()->getParameters()) {
             $stmt->execute($this->getSelect()->getWhere()->getParameters());

@@ -90,12 +90,12 @@ class ConnectionDecorator extends \PDO
     /**
      * @return \PDO
      */
-    final protected function getConcretePDO()
+    final public function getConcretePDO()
     {
         return $this->concretePDO;
     }
 
-    final protected function setConcretePDO($concretePDO)
+    final public function setConcretePDO($concretePDO)
     {
         $this->concretePDO = $concretePDO;
         return $this;

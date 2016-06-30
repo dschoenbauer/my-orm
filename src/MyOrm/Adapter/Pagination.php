@@ -1,5 +1,6 @@
 <?php namespace CTIMT\MyOrm\Adapter;
 
+use CTIMT\MyOrm\Adapter\PaginationStrategy\PaginationStrategyInterface;
 use CTIMT\MyOrm\Enum\Defaults;
 use CTIMT\MyOrm\Enum\LayoutKeys;
 use CTIMT\MyOrm\Enum\ModelAttributes;
@@ -10,7 +11,6 @@ use CTIMT\MyOrm\Model\ModelVisitorInterface;
 use CTIMT\MyOrm\Model\ObserverInterface;
 use CTIMT\MyOrm\Tools\ArrayUtilities;
 use CTIMT\MyOrm\Tools\Server;
-use PDO;
 
 /*
  * Copyright 2015 Coe-Truman International.
@@ -33,15 +33,22 @@ class Pagination implements SelectVisitorInterface, ModelVisitorInterface, Obser
     private $page = 1;
     private $totalResults = 0;
     private $totalPages = 1;
+    private $strategy;
+    
+    public function __construct(PaginationStrategyInterface $strategy)
+    {
+        $this->setStrategy($strategy);
+    }
 
     public function visitSelect(Select $select)
     {
-        $select->setSqlCalcFoundRows()->setLimit($this->getPageSize() * ($this->getPage() - 1), $this->getPageSize());
+        $this->getStrategy()->visitSelect($select);
     }
 
     public function visitModel(Model $model)
     {
         $model->attach($this);
+        $model->accept($this->getStrategy());
         $userInput = $model->getAttribute(ModelAttributes::PAGE, Defaults::PAGE);
         $page = array_key_exists(PaginatedReponseKeys::KEY_PAGE_CURRENT, $userInput) ? $userInput[PaginatedReponseKeys::KEY_PAGE_CURRENT] : Defaults::PAGE;
         $pageSize = array_key_exists(PaginatedReponseKeys::KEY_PAGE_SIZE, $userInput) ? $userInput[PaginatedReponseKeys::KEY_PAGE_SIZE] : Defaults::PAGE_SIZE;
@@ -54,9 +61,6 @@ class Pagination implements SelectVisitorInterface, ModelVisitorInterface, Obser
         if ($eventName == ModelEvents::LAYOUT_COLLECTION_APPLIED) {
             $this->addMetaInformationToLayout($model);
         }
-        if ($eventName == ModelEvents::PRIMARY_DATA_PULLED) {
-            $this->setTotals($model->getQuery()->getAdapter());
-        }
     }
 
     public function addMetaInformationToLayout(Model $model)
@@ -67,13 +71,6 @@ class Pagination implements SelectVisitorInterface, ModelVisitorInterface, Obser
         $data[LayoutKeys::META_KEY][PaginatedReponseKeys::PARAMETER_PAGE] = $this->getMeta($model);
         $data[LayoutKeys::META_KEY][PaginatedReponseKeys::KEY_TOTAL_ITEMS] = (int) $this->getTotalResults();
         $model->setData($data);
-    }
-
-    public function setTotals(PDO $adapter)
-    {
-        $this->setTotalResults($adapter->query('SELECT FOUND_ROWS();')->fetch(PDO::FETCH_COLUMN));
-        $this->setTotalPages(ceil($this->getTotalResults() / $this->getPageSize()));
-        return $this;
     }
 
     private function getMeta($model)
@@ -135,12 +132,28 @@ class Pagination implements SelectVisitorInterface, ModelVisitorInterface, Obser
     public function setTotalResults($totalResults)
     {
         $this->totalResults = $totalResults;
+        $this->setTotalPages(ceil($this->getTotalResults() / $this->getPageSize()));
         return $this;
     }
 
     public function setTotalPages($totalPages)
     {
         $this->totalPages = $totalPages;
+        return $this;
+    }
+    
+    /**
+     * @return PaginationStrategyInterface
+     */
+    public function getStrategy()
+    {
+        return $this->strategy;
+    }
+
+    public function setStrategy(PaginationStrategyInterface $strategy)
+    {
+        $strategy->setPagination($this);
+        $this->strategy = $strategy;
         return $this;
     }
 }

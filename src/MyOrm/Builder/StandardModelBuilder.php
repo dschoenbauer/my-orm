@@ -8,6 +8,9 @@ use CTIMT\MyOrm\Adapter\DefaultValue;
 use CTIMT\MyOrm\Adapter\Fields;
 use CTIMT\MyOrm\Adapter\Filter;
 use CTIMT\MyOrm\Adapter\Pagination;
+use CTIMT\MyOrm\Adapter\PaginationStrategy\MySql;
+use CTIMT\MyOrm\Adapter\PaginationStrategy\SqlServer;
+use CTIMT\MyOrm\Adapter\PaginationStrategy\StrategyFactory;
 use CTIMT\MyOrm\Adapter\Query;
 use CTIMT\MyOrm\Adapter\Required;
 use CTIMT\MyOrm\Adapter\Select;
@@ -117,7 +120,7 @@ class StandardModelBuilder implements ModelBuilderInterface
                 new Fields([ModelEvents::LAYOUT_COLLECTION_APPLIED]),
                 new Sort([ModelEvents::LAYOUT_COLLECTION_APPLIED]),
                 new Filter([ModelEvents::LAYOUT_COLLECTION_APPLIED]),
-                new Pagination(),
+                new Pagination(new StrategyFactory($this->getModel()->getQuery()->getAdapter(), [new SqlServer(),new MySql])),
                 new AliasCollectionView([ModelEvents::LAYOUT_COLLECTION_APPLIED])
                 ]), ModelExecutionPriority::ACTION)
         ;

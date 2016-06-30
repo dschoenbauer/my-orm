@@ -19,37 +19,20 @@ class Select
     const ORDER_ASCENDING = 'asc';
     const ORDER_DESCENDING = 'desc';
 
-    private $_distinct = false;
-    private $_sqlCalcFoundRows = false;
+    private $_selectDirectives = [];
     private $_fields = [];
     private $_from = [];
     private $_where = [];
     private $_groupBy = [];
     private $_having = [];
-    private $_orderBy = [];
-    private $_limit = null;
+    private $_sort = [];
+    private $_footer = '';
 
-    public function getDistinct()
-    {
-        return $this->_distinct;
+    
+    public function addDirective($directive){
+        $this->_selectDirectives[] = $directive;
     }
 
-    public function getSqlCalcFoundRows()
-    {
-        return $this->_sqlCalcFoundRows;
-    }
-
-    public function setDistinct($distinct = true)
-    {
-        $this->_distinct = $distinct;
-        return $this;
-    }
-
-    public function setSqlCalcFoundRows($sqlCalcFoundRows = true)
-    {
-        $this->_sqlCalcFoundRows = $sqlCalcFoundRows;
-        return $this;
-    }
 
     public function getFields()
     {
@@ -59,6 +42,12 @@ class Select
     public function setFields(array $fields)
     {
         $this->_fields = $fields;
+        return $this;
+    }
+    
+    public function addField($field)
+    {
+        $this->_fields[] = $field;
         return $this;
     }
 
@@ -117,24 +106,17 @@ class Select
 
     public function addSort($field, $order)
     {
-        $this->_orderBy[] = sprintf('%s %s', $field, $order);
+        $this->_sort[] = sprintf('%s %s', $field, $order);
         return $this;
     }
 
-    protected function getSort()
+    public function getSort()
     {
-        return $this->_orderBy;
+        return $this->_sort;
     }
 
-    public function setLimit($offset, $rowCount)
-    {
-        $this->_limit = sprintf("LIMIT %s, %s", $offset, $rowCount);
-        return $this;
-    }
-
-    protected function getLimit()
-    {
-        return $this->_limit;
+    public function clearSort(){
+        $this->_sort = [];
     }
 
     public function getSql()
@@ -143,12 +125,7 @@ class Select
             throw new LogicException("You Must Define Tables To Select From");
         }
         $sql = 'SELECT ';
-        if ($this->getDistinct()) {
-            $sql .= 'DISTINCT ';
-        }
-        if ($this->getSqlCalcFoundRows()) {
-            $sql .= 'SQL_CALC_FOUND_ROWS ';
-        }
+        $sql .= $this->getConvertedArray('', $this->getSelectDirectives(),' ');
         $sql .= $this->getConvertedArray('', $this->getFields());
         $sql .= $this->getConvertedArray('FROM', $this->getFrom(), PHP_EOL);
         if ($this->getWhere() instanceof WhereStatement) {
@@ -157,10 +134,7 @@ class Select
         $sql .= $this->getConvertedArray('GROUP BY', $this->getGroupBy());
         $sql .= $this->getConvertedArray('HAVING', $this->getHaving());
         $sql .= $this->getConvertedArray('ORDER BY', $this->getSort());
-
-        if ($this->getLimit()) {
-            $sql .= $this->getLimit() . PHP_EOL;
-        }
+        $sql .= $this->getFooter();
         return $sql;
     }
 
@@ -174,6 +148,22 @@ class Select
     public function accept(SelectVisitorInterface $visitor)
     {
         $visitor->visitSelect($this);
+        return $this;
+    }
+    
+    public function getSelectDirectives()
+    {
+        return $this->_selectDirectives;
+    }
+    
+    public function getFooter()
+    {
+        return $this->_footer;
+    }
+
+    public function setFooter($footer)
+    {
+        $this->_footer = $footer;
         return $this;
     }
 }

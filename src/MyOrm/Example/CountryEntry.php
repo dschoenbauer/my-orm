@@ -39,16 +39,6 @@ HasBoolFieldsInterface, HasStringFieldsInterface, HasFilterInterface, IsSortable
         return ['country_name', 'country_abbrev2'];
     }
 
-    public function getDefaultSortDirection()
-    {
-        return "desc";
-    }
-
-    public function getDefaultSortField()
-    {
-        return "country_name";
-    }
-
     public function getSortFields()
     {
         return ['country_name'];
