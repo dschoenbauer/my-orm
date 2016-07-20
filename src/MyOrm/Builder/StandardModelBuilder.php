@@ -5,6 +5,7 @@ use CTIMT\MyOrm\Adapter\AliasCollectionView;
 use CTIMT\MyOrm\Adapter\AliasEntityView;
 use CTIMT\MyOrm\Adapter\ClearId;
 use CTIMT\MyOrm\Adapter\DefaultValue;
+use CTIMT\MyOrm\Adapter\EmbeddedData;
 use CTIMT\MyOrm\Adapter\Fields;
 use CTIMT\MyOrm\Adapter\Filter;
 use CTIMT\MyOrm\Adapter\Pagination;
@@ -24,6 +25,7 @@ use CTIMT\MyOrm\Enum\ModelActions;
 use CTIMT\MyOrm\Enum\ModelEvents;
 use CTIMT\MyOrm\Enum\ModelExecutionPriority;
 use CTIMT\MyOrm\Model\Model;
+use CTIMT\MyOrm\Tools\Repository;
 use CTIMT\MyOrm\Visitor\Command\UserInput;
 use CTIMT\MyOrm\Visitor\Command\ValidateData;
 use CTIMT\MyOrm\Visitor\Command\ValidFieldsFilter;
@@ -111,6 +113,7 @@ class StandardModelBuilder implements ModelBuilderInterface
 
     protected function addFetch()
     {
+        $this->getModel()->accept(new EmbeddedData([ModelEvents::PRIMARY_DATA_PULLED], new Repository()));
         $this->getModel()->getActions()
             ->add(ModelActions::FETCH, new Fetch(new Select(), [
                 new Fields([ModelEvents::LAYOUT_ENTITY_APPLIED]),

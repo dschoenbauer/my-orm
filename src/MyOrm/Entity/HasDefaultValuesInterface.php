@@ -7,5 +7,8 @@
 interface HasDefaultValuesInterface
 {
 
-    function getDefaultValues();
+    /**
+     * @return array key value pairs of default values
+     */
+    public function getDefaultValues();
 }

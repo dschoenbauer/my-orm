@@ -1,8 +1,4 @@
-<?php
-/*
- * Copyright 2015 David.
- */
-namespace CTIMT\MyOrm\DataProvider;
+<?php namespace CTIMT\MyOrm\DataProvider;
 
 /**
  *
@@ -10,6 +6,5 @@ namespace CTIMT\MyOrm\DataProvider;
  */
 interface DataProviderInterface
 {
-
     function getData();
 }

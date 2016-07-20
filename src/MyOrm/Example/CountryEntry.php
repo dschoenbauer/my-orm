@@ -2,6 +2,7 @@
 
 use CTIMT\MyOrm\Entity\AbstractEntity;
 use CTIMT\MyOrm\Entity\HasBoolFieldsInterface;
+use CTIMT\MyOrm\Entity\HasDataRelationshipInterface;
 use CTIMT\MyOrm\Entity\HasDefaultValuesInterface;
 use CTIMT\MyOrm\Entity\HasFilterInterface;
 use CTIMT\MyOrm\Entity\HasNumericFieldsInterface;
@@ -9,6 +10,7 @@ use CTIMT\MyOrm\Entity\HasRequiredFieldsInterface;
 use CTIMT\MyOrm\Entity\HasStaticValuesInterface;
 use CTIMT\MyOrm\Entity\HasStringFieldsInterface;
 use CTIMT\MyOrm\Entity\IsSortableInterface;
+use CTIMT\MyOrm\Entity\Relationship\RelationshipOneToManyEntity;
 
 /**
  * Description of CountryEntry
@@ -16,7 +18,7 @@ use CTIMT\MyOrm\Entity\IsSortableInterface;
  * @author David Schoenbauer <d.schoenbauer@ctimeetingtech.com>
  */
 class CountryEntry extends AbstractEntity implements
-HasBoolFieldsInterface, HasStringFieldsInterface, HasFilterInterface, IsSortableInterface, HasNumericFieldsInterface, HasDefaultValuesInterface, HasStaticValuesInterface, HasRequiredFieldsInterface
+HasBoolFieldsInterface, HasStringFieldsInterface, HasFilterInterface, IsSortableInterface, HasNumericFieldsInterface, HasDefaultValuesInterface, HasStaticValuesInterface, HasRequiredFieldsInterface, HasDataRelationshipInterface
 {
 
     public function __construct()
@@ -61,6 +63,11 @@ HasBoolFieldsInterface, HasStringFieldsInterface, HasFilterInterface, IsSortable
 
     public function getRequiredFields()
     {
-        return ['country_abbrev2','country_abbrev3'];
+        return ['country_abbrev2', 'country_abbrev3'];
+    }
+
+    public function getDataRelationships()
+    {
+        return [new RelationshipOneToManyEntity('CountryToState', new State(), 'country_id')];
     }
 }

@@ -23,5 +23,7 @@ class SearchTypes
     const CONTAINS = '%1$s like concat(\'%%\', :%1$s, \'%%\')';
     const STARTS_WITH = '%1$s like concat(:%1$s, \'%%\')';
     const ENDS_WITH = '%1$s like concat(\'%%\', :%1$s)';
-
+    public static function manual($sql){
+        return $sql;
+    }
 }
