@@ -32,7 +32,15 @@ class FormatData implements ModelVisitorInterface
             foreach($formats as $format){
             /* @var $format FormatInterface */
                 if($format->isRelevent($entity, $key, $value)){
+                    if($key == 'selected'){
+                        $oVal = $value;
+                    }
                     $value = $format->format($value);
+                    if($key == 'selected'){
+                        if($oVal !== $value){
+                            var_dump($entity, $key, $oVal,$value,$format);die();
+                        }
+                    }
                     return;
                 }
             }

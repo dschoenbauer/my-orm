@@ -20,6 +20,6 @@ class Null implements FormatInterface
 
     public function isRelevent($entity, $key, $value)
     {
-        return $value == '' || $value === null || $value === 'null';
+        return ($value == '' || $value === null || $value === 'null') && !is_bool($value);
     }
 }

@@ -1,5 +1,7 @@
 <?php namespace CTIMT\MyOrm\Entity\Relationship;
 
+use CTIMT\MyOrm\Enum\LayoutKeys;
+
 /**
  * Description of Relationship
  *
@@ -10,9 +12,9 @@ class RelationshipManyToOneEnity extends AbstractRelationship
     protected function assignData(array $data, $linkingField, array $entityData, $name)
     {
         foreach ($data as &$row){
-            $row['_embedded'][$name] = null;
+            $row[LayoutKeys::EMBEDDED_KEY][$name] = null;
             if(array_key_exists($linkingField, $row) && array_key_exists($row[$linkingField], $entityData)){
-                $row['_embedded'][$name] = $entityData[$row[$linkingField]];
+                $row[LayoutKeys::EMBEDDED_KEY][$name] = $entityData[$row[$linkingField]];
             }
         }
         return $data;

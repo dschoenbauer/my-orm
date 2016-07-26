@@ -1,5 +1,6 @@
 <?php namespace CTIMT\MyOrm\Adapter;
 
+use CTIMT\MyOrm\Entity\AggregateEntity;
 use CTIMT\MyOrm\Entity\HasDataRelationshipInterface;
 use CTIMT\MyOrm\Enum\RepositoryKeys;
 use CTIMT\MyOrm\Model\Model;
@@ -27,7 +28,7 @@ class EmbeddedData extends AbstractModelObserver implements ModelVisitorInterfac
     {
         $this->getRepository()->add(RepositoryKeys::ENTITY, $model->getEntity());
         $model->setData($this->embedData($model->getData(), $model->getEntity()->getDataRelationships()));
-        var_dump($this->getRepository());
+        $this->updateEntity($model, $this->getRepository()->get(RepositoryKeys::ENTITY, []));
     }
 
     public function visitModel(Model $model)
@@ -36,5 +37,14 @@ class EmbeddedData extends AbstractModelObserver implements ModelVisitorInterfac
             $model->attach($this);
             $this->setAdapter($model->getQuery()->getAdapter());
         }
+    }
+
+    protected function updateEntity(Model $model, array $entities)
+    {
+        $agEntity = new AggregateEntity();
+        foreach ($entities as $entity) {
+            $agEntity->import($entity);
+        }
+        $model->setEntity($agEntity);
     }
 }
