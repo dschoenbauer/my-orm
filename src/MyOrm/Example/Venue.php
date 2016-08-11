@@ -44,8 +44,8 @@ class Venue extends AbstractEntity implements HasNumericFieldsInterface, HasStri
     public function getDataRelationships()
     {
         return [
-            new RelationshipList('VenueToState', new State(), 'state_id','state_name'),
-            new RelationshipList('VenueToCountry', new CountryEntry(), 'country_id','country_name'),
+            new RelationshipList('VenueToCountry', new CountryEntry(), 'country_id', 'country_name', 'country_id', 'country_name'),
+            new RelationshipList('VenueToState', new State(), 'state_id', 'state_name', 'state_id', 'state_name', 'country_id'),
         ];
     }
 }

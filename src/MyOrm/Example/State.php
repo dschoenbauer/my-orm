@@ -33,6 +33,6 @@ HasNumericFieldsInterface, HasStringFieldsInterface, HasDataRelationshipInterfac
     public function getDataRelationships()
     {
         //return [];
-        return [new RelationshipManyToOneEnity('CountryToState',New CountryEntry(), 'country_id')];
+        return [new RelationshipManyToOneEnity('CountryToState', New CountryEntry(), 'country_id')];
     }
 }

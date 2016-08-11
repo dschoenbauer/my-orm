@@ -62,12 +62,17 @@ abstract class AbstractRelationship implements DataRelationshipInterface, HasRep
         $stmt->execute();
         $entityData = $stmt->fetchAll(PDO::FETCH_ASSOC | PDO::FETCH_UNIQUE);
 
-        if ($this->getEntity() instanceof HasDataRelationshipInterface) {
+        if ($this->getEntity() instanceof HasDataRelationshipInterface && $this->includeEmbeddedData()) {
             $entityData = $this->embedData($entityData, $this->getEntity()->getDataRelationships());
         }
 
         return $this->assignData($data, $this->getLinkingField(), $entityData, $this->getEntity()->getName());
     }
+
+    protected function includeEmbeddedData(){
+        return true;
+    }
+
 
     abstract protected function assignData(array $data, $linkingField, array $entityData, $name);
 

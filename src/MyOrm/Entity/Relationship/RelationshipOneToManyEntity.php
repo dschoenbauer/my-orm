@@ -18,7 +18,6 @@ class RelationshipOneToManyEntity extends AbstractRelationship
             }
             return $row;
         }, $data);
-        
         foreach ($entityData as $row) {
             if (array_key_exists($linkingField, $row) && array_key_exists($row[$linkingField], $defaultedData)) {
                 $defaultedData[$row[$linkingField]][LayoutKeys::EMBEDDED_KEY][$name][] = $row;
