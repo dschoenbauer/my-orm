@@ -33,7 +33,7 @@ class Entity implements ModelVisitorInterface
     {
         $format = new FormatData();
         $format->add(new Boolean())
-            ->add(New Null)
+            ->add(New Null())
             ->add(new Number())
             ->add(new String())
             ->add(new Date($model));

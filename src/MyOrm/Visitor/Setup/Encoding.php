@@ -22,8 +22,6 @@ class Encoding implements ModelVisitorInterface
     {
         mb_internal_encoding($this->getEncoding());
         ini_set("default_charset", $this->getEncoding());
-        iconv_set_encoding("output_encoding", $this->getEncoding());
-        iconv_set_encoding("internal_encoding", $this->getEncoding());
 
         mb_http_output($this->getEncoding());
         mb_http_input($this->getEncoding());
